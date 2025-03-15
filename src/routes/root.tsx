@@ -11,7 +11,7 @@ function Root() {
       <ul className="space-y-3.5 ">
         <li>
           <NavLink
-            to={`/home`}
+            to={`/`}
             className={({ isActive }) => (isActive ? active : inactive)}
           >
             <svg

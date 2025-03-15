@@ -4,7 +4,7 @@ import { lazy } from 'react'
 import MainLayout from '../layout/MainLayout'
 import ErrorPage from '../layout/error-page'
 
-const HomePage = lazy(() => import('@/pages/Home'))
+const DragAndDropMap = lazy(() => import('@/pages/Projects/DragAndDropMap/DragAndDropMap'))
 
 export const AppRoutes = () => {
   return useRoutes([
@@ -13,7 +13,7 @@ export const AppRoutes = () => {
       children: [
         {
           path: '/',
-          element: <HomePage />
+          element: <DragAndDropMap />
         },
       ]
     },

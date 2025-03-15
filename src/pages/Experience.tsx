@@ -1,4 +1,4 @@
-import exportImage from "@/utils/exportImage"
+import CsScrollArea from "@/components/CsScrollArea/CsScrollArea";
 
 const Experience = () => {
 
@@ -83,34 +83,27 @@ const Experience = () => {
 
     return (
         <>
-            {experience.map((e) => (
-                <div key={e.id} className="grid grid-cols-3 cursor-pointer border-b">
-                    <div className="flex items-center justify-center flex-col">
-                        <div className="text-sm text-gray-400">{e.fecha}</div>
-                        <div className="flex items-center gap-2 justify-center">
-                            <span className="text-sm text-gray-800 font-bold"> {e.empresa}</span>
-                            <div className="text-sm"> - {e.modalidad}</div>
+            <CsScrollArea className="bg-white-900" rest={50}>
+                {experience.map((e) => (
+                    <div key={e.id} className="grid grid-cols-3 cursor-pointer border-b">
+                        <div className="flex items-center justify-center flex-col">
+                            <div className="text-sm text-gray-400">{e.fecha}</div>
+                            <div className="flex items-center gap-2 justify-center">
+                                <span className="text-sm text-gray-800 font-bold"> {e.empresa}</span>
+                                <div className="text-sm"> - {e.modalidad}</div>
+                            </div>
+                        </div>
+                        <div className=" flex justify-center flex-col border-l">
+                            <div className="text-sm text-gray-400 text-center"> Actividades</div>
+                            <div className="list-disc m-6">
+                                {e.actividades.map((act) => (
+                                    <li key={act.id} className="text-sm">{act.descripcion}</li>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                    <div className=" flex justify-center flex-col border-l">
-                        <div className="text-sm text-gray-400 text-center"> Actividades</div>
-                        <div className="list-disc m-6">
-                            {e.actividades.map((act) => (
-                                <li key={act.id} className="text-sm">{act.descripcion}</li>
-                            ))}
-                        </div>
-                    </div>
-                    <div className=" flex flex-col border-l">
-                        <div className="text-sm text-gray-400 text-center"> Conocimientos aplicados</div>
-                        <div className="flex justify-center items-center m-6">
-                            {e.conocimientos.map((con) => (
-                                <img key={con.id} src={exportImage(con.img)} height={"50px"} width={"50px"} />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            ))
-            }
+                ))}
+            </CsScrollArea>
         </>
     )
 }
