@@ -7,7 +7,6 @@ import {
   Github,
   Moon,
   Sun,
-  ChevronDown,
   Menu,
   X,
   ArrowUpRight,
