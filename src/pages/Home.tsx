@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import img from "../assets/yo.png";
 import {
   Mail,
@@ -452,7 +452,9 @@ function About() {
   return (
     <section id="about" style={{ borderBottom: "1px solid var(--border)" }}>
       {/* Constrained content */}
-      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px 48px" }}>
+      <div
+        style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px 48px" }}
+      >
         <span className="label">01 · sobre mí</span>
 
         <div
@@ -475,13 +477,26 @@ function About() {
               <br />
               con visión de producto
             </h2>
-            <p style={{ fontSize: "0.88rem", color: "var(--txt-2)", lineHeight: 1.8, marginBottom: 14 }}>
+            <p
+              style={{
+                fontSize: "0.88rem",
+                color: "var(--txt-2)",
+                lineHeight: 1.8,
+                marginBottom: 14,
+              }}
+            >
               Desarrollo software desde pequeños proyectos hasta sistemas
               empresariales. Me especializo en aplicaciones web full-stack y
               móviles híbridas, con enfoque en calidad de código y experiencia
               de usuario.
             </p>
-            <p style={{ fontSize: "0.88rem", color: "var(--txt-2)", lineHeight: 1.8 }}>
+            <p
+              style={{
+                fontSize: "0.88rem",
+                color: "var(--txt-2)",
+                lineHeight: 1.8,
+              }}
+            >
               He trabajado en múltiples roles — desarrollador, líder de
               proyectos, soporte técnico y diseñador — lo que me da una visión
               integral de cualquier producto digital.
@@ -492,23 +507,73 @@ function About() {
           <div>
             <span className="label">contacto</span>
             {[
-              { icon: <Mail size={13} />, label: "Email",     val: "alex_180796@hotmail.com",       href: "mailto:alex_180796@hotmail.com" },
-              { icon: <Phone size={13} />, label: "Teléfono", val: "961 633 4735",                  href: "tel:+529616334735" },
-              { icon: <MapPin size={13} />, label: "Ubicación",val: "Tabasco, México",              href: "#" },
-              { icon: <Linkedin size={13} />, label: "LinkedIn",val: "/in/asanchezx96",             href: "https://www.linkedin.com/in/asanchezx96/" },
-              { icon: <Github size={13} />, label: "GitHub",  val: "asanchezx96",                  href: "https://github.com/asanchezx96" },
+              {
+                icon: <Mail size={13} />,
+                label: "Email",
+                val: "alex_180796@hotmail.com",
+                href: "mailto:alex_180796@hotmail.com",
+              },
+              {
+                icon: <Phone size={13} />,
+                label: "Teléfono",
+                val: "961 633 4735",
+                href: "tel:+529616334735",
+              },
+              {
+                icon: <MapPin size={13} />,
+                label: "Ubicación",
+                val: "Tabasco, México",
+                href: "#",
+              },
+              {
+                icon: <Linkedin size={13} />,
+                label: "LinkedIn",
+                val: "/in/asanchezx96",
+                href: "https://www.linkedin.com/in/asanchezx96/",
+              },
+              {
+                icon: <Github size={13} />,
+                label: "GitHub",
+                val: "asanchezx96",
+                href: "https://github.com/asanchezx96",
+              },
             ].map((c) => (
               <a
                 key={c.label}
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
-                style={{ display: "grid", gridTemplateColumns: "14px 80px 1fr", gap: 12, alignItems: "center", padding: "12px 0", borderBottom: "1px solid var(--border)", color: "var(--txt-2)", fontSize: "0.83rem", textDecoration: "none", transition: "color .15s" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "var(--accent)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "var(--txt-2)")}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "14px 80px 1fr",
+                  gap: 12,
+                  alignItems: "center",
+                  padding: "12px 0",
+                  borderBottom: "1px solid var(--border)",
+                  color: "var(--txt-2)",
+                  fontSize: "0.83rem",
+                  textDecoration: "none",
+                  transition: "color .15s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "var(--accent)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "var(--txt-2)")
+                }
               >
                 <span style={{ color: "var(--txt-3)" }}>{c.icon}</span>
-                <span style={{ fontSize: "0.64rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--txt-3)", fontFamily: "monospace" }}>{c.label}</span>
+                <span
+                  style={{
+                    fontSize: "0.64rem",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    color: "var(--txt-3)",
+                    fontFamily: "monospace",
+                  }}
+                >
+                  {c.label}
+                </span>
                 <span>{c.val}</span>
               </a>
             ))}
@@ -518,33 +583,78 @@ function About() {
 
       {/* Specialties grid — same width as other sections */}
       <div style={{ maxWidth: 1040, margin: "0 auto", padding: "0 24px 0" }}>
-      <div className="spec-grid" style={{ borderTop: "1px solid var(--border)", borderLeft: "1px solid var(--border)" }}>
-        {[
-          { t: "Desarrollo Web",  d: "React · Vue.js · Angular · TypeScript" },
-          { t: "Apps Móviles",   d: "Ionic · Flutter · Android / iOS" },
-          { t: "Backend & APIs",  d: "PHP · .NET · Python · FastAPI · REST · WebSockets" },
-          { t: "Bases de Datos",  d: "MySQL · PostgreSQL · MongoDB · SQL Server" },
-          { t: "Despliegue",      d: "Vercel · Nginx · IIS · cPanel · Docker · SSH" },
-          { t: "Diseño & Más",   d: "Photoshop · Figma · Marketing Digital · SEO" },
-        ].map(c => (
-          <div
-            key={c.t}
-            style={{ padding: "20px 24px", background: "var(--surface)", borderBottom: "1px solid var(--border)", borderRight: "1px solid var(--border)", transition: "background .15s" }}
-            onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "var(--subtle)")}
-            onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = "var(--surface)")}
-          >
-            <div style={{ fontSize: "0.78rem", fontWeight: 600, color: "var(--txt)", marginBottom: 5 }}>{c.t}</div>
-            <div style={{ fontSize: "0.68rem", color: "var(--txt-3)", fontFamily: "monospace", lineHeight: 1.6 }}>{c.d}</div>
-          </div>
-        ))}
-      </div>
+        <div
+          className="spec-grid"
+          style={{
+            borderTop: "1px solid var(--border)",
+            borderLeft: "1px solid var(--border)",
+          }}
+        >
+          {[
+            { t: "Desarrollo Web", d: "React · Vue.js · Angular · TypeScript" },
+            { t: "Apps Móviles", d: "Ionic · Flutter · Android / iOS" },
+            {
+              t: "Backend & APIs",
+              d: "PHP · .NET · Python · FastAPI · REST · WebSockets",
+            },
+            {
+              t: "Bases de Datos",
+              d: "MySQL · PostgreSQL · MongoDB · SQL Server",
+            },
+            {
+              t: "Despliegue",
+              d: "Vercel · Nginx · IIS · cPanel · Docker · SSH",
+            },
+            {
+              t: "Diseño & Más",
+              d: "Photoshop · Figma · Marketing Digital · SEO",
+            },
+          ].map((c) => (
+            <div
+              key={c.t}
+              style={{
+                padding: "20px 24px",
+                background: "var(--surface)",
+                borderBottom: "1px solid var(--border)",
+                borderRight: "1px solid var(--border)",
+                transition: "background .15s",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLDivElement).style.background =
+                  "var(--subtle)")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLDivElement).style.background =
+                  "var(--surface)")
+              }
+            >
+              <div
+                style={{
+                  fontSize: "0.78rem",
+                  fontWeight: 600,
+                  color: "var(--txt)",
+                  marginBottom: 5,
+                }}
+              >
+                {c.t}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.68rem",
+                  color: "var(--txt-3)",
+                  fontFamily: "monospace",
+                  lineHeight: 1.6,
+                }}
+              >
+                {c.d}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
-
   );
 }
-
-
 
 /* ─────────────────────────────────────────────
    SKILLS
@@ -569,19 +679,37 @@ function Skills() {
         </h2>
 
         <div style={{ borderTop: "1px solid var(--border)" }}>
-          {SKILLS.map(g => (
-            <div
-              key={g.label}
-              className="skrow"
-            >
+          {SKILLS.map((g) => (
+            <div key={g.label} className="skrow">
               <span className="skrow-label">{g.label}</span>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {g.items.map(item => (
+                {g.items.map((item) => (
                   <span
                     key={item}
-                    style={{ display: "inline-flex", alignItems: "center", padding: "3px 10px", border: "1px solid var(--border)", fontSize: "0.73rem", color: "var(--txt-2)", background: "var(--surface)", fontFamily: "monospace", cursor: "default", transition: "border-color .15s, color .15s" }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.color = "var(--txt-2)"; }}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      padding: "3px 10px",
+                      border: "1px solid var(--border)",
+                      fontSize: "0.73rem",
+                      color: "var(--txt-2)",
+                      background: "var(--surface)",
+                      fontFamily: "monospace",
+                      cursor: "default",
+                      transition: "border-color .15s, color .15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "var(--accent)";
+                      (e.currentTarget as HTMLElement).style.color =
+                        "var(--accent)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLElement).style.borderColor =
+                        "var(--border)";
+                      (e.currentTarget as HTMLElement).style.color =
+                        "var(--txt-2)";
+                    }}
                   >
                     {item}
                   </span>
@@ -631,18 +759,66 @@ function Experience() {
                   onClick={() => setOpen(isOpen ? null : e.id)}
                   className="xrow"
                 >
-                  <span className="xrow-date" style={{ fontSize: "0.75rem", color: "var(--txt-3)", fontFamily: "monospace", whiteSpace: "nowrap" }}>{e.date}</span>
+                  <span
+                    className="xrow-date"
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "var(--txt-3)",
+                      fontFamily: "monospace",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {e.date}
+                  </span>
                   <div>
-                    <span style={{ fontWeight: 600, fontSize: "0.92rem", color: isOpen ? "var(--accent)" : "var(--txt)", display: "block", transition: "color .15s" }}>{e.company}</span>
-                    <span style={{ fontSize: "0.8rem", color: "var(--txt-3)" }}>{e.role}</span>
+                    <span
+                      style={{
+                        fontWeight: 600,
+                        fontSize: "0.92rem",
+                        color: isOpen ? "var(--accent)" : "var(--txt)",
+                        display: "block",
+                        transition: "color .15s",
+                      }}
+                    >
+                      {e.company}
+                    </span>
+                    <span style={{ fontSize: "0.8rem", color: "var(--txt-3)" }}>
+                      {e.role}
+                    </span>
                   </div>
-                  <ChevronDown size={14} style={{ color: "var(--txt-3)", transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .2s", flexShrink: 0 }} />
+                  <ChevronDown
+                    size={14}
+                    style={{
+                      color: "var(--txt-3)",
+                      transform: isOpen ? "rotate(180deg)" : "none",
+                      transition: "transform .2s",
+                      flexShrink: 0,
+                    }}
+                  />
                 </button>
 
                 {isOpen && (
-                  <div style={{ paddingBottom: 24, paddingLeft: 0, display: "flex", flexDirection: "column", gap: 12 }} className="xrow-detail">
+                  <div
+                    style={{
+                      paddingBottom: 24,
+                      paddingLeft: 0,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 12,
+                    }}
+                    className="xrow-detail"
+                  >
                     {e.location && (
-                      <p style={{ fontSize: "0.75rem", color: "var(--txt-3)", display: "flex", alignItems: "center", gap: 6, fontFamily: "monospace" }}>
+                      <p
+                        style={{
+                          fontSize: "0.75rem",
+                          color: "var(--txt-3)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 6,
+                          fontFamily: "monospace",
+                        }}
+                      >
                         <MapPin size={11} /> {e.location} · {e.mode}
                       </p>
                     )}
@@ -716,7 +892,7 @@ function Experience() {
 ───────────────────────────────────────────── */
 const _projImages = import.meta.glob(
   "../assets/projects/**/*.{png,jpg,jpeg,webp,gif,svg}",
-  { eager: true }
+  { eager: true },
 ) as Record<string, { default: string }>;
 
 function getProjectImages(folder: string): string[] {
@@ -725,21 +901,44 @@ function getProjectImages(folder: string): string[] {
     .map(([, mod]) => (mod as any).default as string);
 }
 
-const CARD_ACCENTS = ["#00e676","#00bcd4","#7c4dff","#ff4081","#ff9800","#64dd17","#00b0ff"];
+const CARD_ACCENTS = [
+  "#00e676",
+  "#00bcd4",
+  "#7c4dff",
+  "#ff4081",
+  "#ff9800",
+  "#64dd17",
+  "#00b0ff",
+];
 
 /* ── Modal ── */
-function ProjectModal({ project, idx, onClose }: { project: typeof PROJECTS[0]; idx: number; onClose: () => void }) {
+function ProjectModal({
+  project,
+  idx,
+  onClose,
+}: {
+  project: (typeof PROJECTS)[0];
+  idx: number;
+  onClose: () => void;
+}) {
   const [imgIdx, setImgIdx] = useState(0);
   const images = getProjectImages(project.folder ?? "");
-  const color  = CARD_ACCENTS[idx % CARD_ACCENTS.length];
-  const init   = project.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+  const color = CARD_ACCENTS[idx % CARD_ACCENTS.length];
+  const init = project.name
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   // ESC to close
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight" && images.length > 1) setImgIdx(i => (i + 1) % images.length);
-      if (e.key === "ArrowLeft"  && images.length > 1) setImgIdx(i => (i - 1 + images.length) % images.length);
+      if (e.key === "ArrowRight" && images.length > 1)
+        setImgIdx((i) => (i + 1) % images.length);
+      if (e.key === "ArrowLeft" && images.length > 1)
+        setImgIdx((i) => (i - 1 + images.length) % images.length);
     };
     window.addEventListener("keydown", fn);
     return () => window.removeEventListener("keydown", fn);
@@ -748,28 +947,95 @@ function ProjectModal({ project, idx, onClose }: { project: typeof PROJECTS[0]; 
   // Lock scroll
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, []);
 
-  const prev = (e: React.MouseEvent) => { e.stopPropagation(); setImgIdx(i => (i - 1 + images.length) % images.length); };
-  const next = (e: React.MouseEvent) => { e.stopPropagation(); setImgIdx(i => (i + 1) % images.length); };
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setImgIdx((i) => (i - 1 + images.length) % images.length);
+  };
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setImgIdx((i) => (i + 1) % images.length);
+  };
 
   return (
     <div
       onClick={onClose}
-      style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.88)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 400,
+        background: "rgba(0,0,0,0.88)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+      }}
     >
       <div
-        onClick={e => e.stopPropagation()}
-        style={{ background: "var(--surface)", border: "1px solid var(--border)", width: "100%", maxWidth: 840, maxHeight: "90vh", display: "flex", flexDirection: "column", animation: "modalIn .2s cubic-bezier(0.16,1,0.3,1)" }}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+          width: "100%",
+          maxWidth: 1240,
+          maxHeight: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          animation: "modalIn .2s cubic-bezier(0.16,1,0.3,1)",
+        }}
       >
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 20px", borderBottom: "1px solid var(--border)", flexShrink: 0 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "13px 20px",
+            borderBottom: "1px solid var(--border)",
+            flexShrink: 0,
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--txt)" }}>{project.name}</span>
-            <span style={{ fontSize: "0.6rem", color: "var(--accent)", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.1em" }}>{project.type}</span>
+            <span
+              style={{
+                fontWeight: 700,
+                fontSize: "0.95rem",
+                color: "var(--txt)",
+              }}
+            >
+              {project.name}
+            </span>
+            <span
+              style={{
+                fontSize: "0.6rem",
+                color: "var(--accent)",
+                fontFamily: "monospace",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+              }}
+            >
+              {project.type}
+            </span>
           </div>
-          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--txt-3)", padding: 4, display: "flex", alignItems: "center", transition: "color .15s" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--txt)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--txt-3)")}>
+          <button
+            onClick={onClose}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "var(--txt-3)",
+              padding: 4,
+              display: "flex",
+              alignItems: "center",
+              transition: "color .15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--txt)")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--txt-3)")}
+          >
             <X size={16} />
           </button>
         </div>
@@ -777,60 +1043,219 @@ function ProjectModal({ project, idx, onClose }: { project: typeof PROJECTS[0]; 
         {/* Body */}
         <div className="modal-body">
           {/* Left — Image carousel */}
-          <div style={{ position: "relative", background: "var(--bg)", borderRight: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 280 }}>
+          <div
+            style={{
+              position: "relative",
+              background: "var(--bg)",
+              borderRight: "1px solid var(--border)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: 380,
+            }}
+          >
             {images.length > 0 ? (
               <>
                 <img
                   src={images[imgIdx]}
                   alt={`${project.name} screenshot ${imgIdx + 1}`}
-                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", maxHeight: 360 }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    display: "block",
+                    maxHeight: 500,
+                  }}
                 />
-                {images.length > 1 && (<>
-                  {/* Arrows */}
-                  <button onClick={prev} className="modal-arrow modal-arrow-l"><span>‹</span></button>
-                  <button onClick={next} className="modal-arrow modal-arrow-r"><span>›</span></button>
-                  {/* Counter */}
-                  <div style={{ position: "absolute", top: 10, right: 10, fontFamily: "monospace", fontSize: "0.62rem", color: "var(--txt-3)", background: "var(--surface)", padding: "2px 8px", border: "1px solid var(--border)" }}>
-                    {imgIdx + 1} / {images.length}
-                  </div>
-                  {/* Dots */}
-                  <div style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6 }}>
-                    {images.map((_, i) => (
-                      <button key={i} onClick={e => { e.stopPropagation(); setImgIdx(i); }}
-                        style={{ width: 6, height: 6, border: "none", cursor: "pointer", padding: 0, background: i === imgIdx ? "var(--accent)" : "var(--border-2)", transition: "background .15s" }}
-                      />
-                    ))}
-                  </div>
-                </>)}
+                {images.length > 1 && (
+                  <>
+                    {/* Arrows */}
+                    <button
+                      onClick={prev}
+                      className="modal-arrow modal-arrow-l"
+                    >
+                      <span>‹</span>
+                    </button>
+                    <button
+                      onClick={next}
+                      className="modal-arrow modal-arrow-r"
+                    >
+                      <span>›</span>
+                    </button>
+                    {/* Counter */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 10,
+                        right: 10,
+                        fontFamily: "monospace",
+                        fontSize: "0.62rem",
+                        color: "var(--txt-3)",
+                        background: "var(--surface)",
+                        padding: "2px 8px",
+                        border: "1px solid var(--border)",
+                      }}
+                    >
+                      {imgIdx + 1} / {images.length}
+                    </div>
+                    {/* Dots */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        bottom: 12,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        display: "flex",
+                        gap: 6,
+                      }}
+                    >
+                      {images.map((_, i) => (
+                        <button
+                          key={i}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setImgIdx(i);
+                          }}
+                          style={{
+                            width: 6,
+                            height: 6,
+                            border: "none",
+                            cursor: "pointer",
+                            padding: 0,
+                            background:
+                              i === imgIdx
+                                ? "var(--accent)"
+                                : "var(--border-2)",
+                            transition: "background .15s",
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </>
             ) : (
-              <div style={{ width: "100%", height: "100%", minHeight: 280, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontFamily: "monospace", fontSize: "4rem", fontWeight: 800, color, opacity: 0.15 }}>{init}</span>
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  minHeight: 280,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: "4rem",
+                    fontWeight: 800,
+                    color,
+                    opacity: 0.15,
+                  }}
+                >
+                  {init}
+                </span>
               </div>
             )}
           </div>
 
           {/* Right — Details */}
-          <div style={{ padding: 24, overflow: "auto", display: "flex", flexDirection: "column", gap: 20 }}>
-            <p style={{ fontSize: "0.83rem", color: "var(--txt-2)", lineHeight: 1.8 }}>{project.description}</p>
+          <div
+            style={{
+              padding: 24,
+              overflow: "auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: 20,
+            }}
+          >
+            <p
+              style={{
+                fontSize: "0.83rem",
+                color: "var(--txt-2)",
+                lineHeight: 1.8,
+              }}
+            >
+              {project.description}
+            </p>
 
             <div>
-              <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: "var(--txt-3)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>Stack</div>
+              <div
+                style={{
+                  fontSize: "0.62rem",
+                  fontFamily: "monospace",
+                  color: "var(--txt-3)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  marginBottom: 10,
+                }}
+              >
+                Stack
+              </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {project.tech.map(t => (
-                  <span key={t} style={{ padding: "3px 8px", border: "1px solid var(--border)", fontSize: "0.65rem", color: "var(--txt-2)", fontFamily: "monospace", background: "var(--bg)" }}>{t}</span>
+                {project.tech.map((t) => (
+                  <span
+                    key={t}
+                    style={{
+                      padding: "3px 8px",
+                      border: "1px solid var(--border)",
+                      fontSize: "0.65rem",
+                      color: "var(--txt-2)",
+                      fontFamily: "monospace",
+                      background: "var(--bg)",
+                    }}
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: "var(--txt-3)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>Repositorios</div>
+              <div
+                style={{
+                  fontSize: "0.62rem",
+                  fontFamily: "monospace",
+                  color: "var(--txt-3)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  marginBottom: 10,
+                }}
+              >
+                Repositorios
+              </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                {project.repos.map(r => (
-                  <a key={r.label} href={r.url} target="_blank" rel="noopener noreferrer"
-                    style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 9px", border: "1px solid var(--border)", fontSize: "0.65rem", color: "var(--txt-3)", fontFamily: "monospace", textDecoration: "none", transition: "color .15s, border-color .15s" }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)"; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--txt-3)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border)"; }}
+                {project.repos.map((r) => (
+                  <a
+                    key={r.label}
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      padding: "3px 9px",
+                      border: "1px solid var(--border)",
+                      fontSize: "0.65rem",
+                      color: "var(--txt-3)",
+                      fontFamily: "monospace",
+                      textDecoration: "none",
+                      transition: "color .15s, border-color .15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.color =
+                        "var(--accent)";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                        "var(--accent)";
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.color =
+                        "var(--txt-3)";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                        "var(--border)";
+                    }}
                   >
                     <GitBranch size={10} /> {r.label} <ExternalLink size={9} />
                   </a>
@@ -839,7 +1264,10 @@ function ProjectModal({ project, idx, onClose }: { project: typeof PROJECTS[0]; 
             </div>
 
             {project.url && (
-              <a href={project.url} target="_blank" rel="noopener noreferrer"
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn btn-solid"
                 style={{ alignSelf: "flex-start", marginTop: "auto" }}
               >
@@ -855,38 +1283,118 @@ function ProjectModal({ project, idx, onClose }: { project: typeof PROJECTS[0]; 
 
 /* ── Grid ── */
 function ProjectGrid() {
-  const [active, setActive] = useState<{ project: typeof PROJECTS[0]; idx: number } | null>(null);
+  const [active, setActive] = useState<{
+    project: (typeof PROJECTS)[0];
+    idx: number;
+  } | null>(null);
 
   return (
     <>
       <div className="proj-grid">
         {PROJECTS.map((p, idx) => {
           const images = getProjectImages(p.folder ?? "");
-          const color  = CARD_ACCENTS[idx % CARD_ACCENTS.length];
-          const init   = p.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
-          const thumb  = images[0];
+          const color = CARD_ACCENTS[idx % CARD_ACCENTS.length];
+          const init = p.name
+            .split(" ")
+            .map((w) => w[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase();
+          const thumb = images[0];
           return (
-            <div key={p.id} className="proj-card" onClick={() => setActive({ project: p, idx })}>
+            <div
+              key={p.id}
+              className="proj-card"
+              onClick={() => setActive({ project: p, idx })}
+            >
               {/* Thumbnail */}
-              <div style={{ height: 110, overflow: "hidden", position: "relative", background: "var(--subtle)", borderBottom: "1px solid var(--border)" }}>
-                {thumb
-                  ? <img src={thumb} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  : (
-                    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <span style={{ fontFamily: "monospace", fontSize: "1.6rem", fontWeight: 800, color, opacity: 0.35 }}>{init}</span>
-                    </div>
-                  )
-                }
+              <div
+                style={{
+                  height: 110,
+                  overflow: "hidden",
+                  position: "relative",
+                  background: "var(--subtle)",
+                  borderBottom: "1px solid var(--border)",
+                }}
+              >
+                {thumb ? (
+                  <img
+                    src={thumb}
+                    alt={p.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: "1.6rem",
+                        fontWeight: 800,
+                        color,
+                        opacity: 0.35,
+                      }}
+                    >
+                      {init}
+                    </span>
+                  </div>
+                )}
                 {images.length > 1 && (
-                  <div style={{ position: "absolute", top: 8, left: 8, fontFamily: "monospace", fontSize: "0.55rem", color: "var(--txt-3)", background: "rgba(0,0,0,0.55)", padding: "2px 6px" }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 8,
+                      left: 8,
+                      fontFamily: "monospace",
+                      fontSize: "0.55rem",
+                      color: "var(--txt-3)",
+                      background: "rgba(0,0,0,0.55)",
+                      padding: "2px 6px",
+                    }}
+                  >
                     {images.length} imgs
                   </div>
                 )}
               </div>
               {/* Info */}
               <div style={{ padding: "12px 14px" }}>
-                <div style={{ fontWeight: 600, fontSize: "0.84rem", color: "var(--txt)", marginBottom: 3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</div>
-                <div style={{ fontSize: "0.62rem", color: "var(--txt-3)", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.type}</div>
+                <div
+                  style={{
+                    fontWeight: 600,
+                    fontSize: "0.84rem",
+                    color: "var(--txt)",
+                    marginBottom: 3,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {p.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.62rem",
+                    color: "var(--txt-3)",
+                    fontFamily: "monospace",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {p.type}
+                </div>
               </div>
             </div>
           );
@@ -908,19 +1416,52 @@ function Projects() {
   return (
     <section id="projects" style={{ borderBottom: "1px solid var(--border)" }}>
       <div style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            marginBottom: 40,
+            flexWrap: "wrap",
+            gap: 16,
+          }}
+        >
           <div>
             <span className="label">04 · proyectos</span>
-            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.5rem, 2.8vw, 2rem)", fontWeight: 700, letterSpacing: "-0.04em", color: "var(--txt)", lineHeight: 1.2 }}>
-              Casos de estudio
+            <h2
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "clamp(1.5rem, 2.8vw, 2rem)",
+                fontWeight: 700,
+                letterSpacing: "-0.04em",
+                color: "var(--txt)",
+                lineHeight: 1.2,
+              }}
+            >
+              Proyectos
             </h2>
           </div>
-          <a href="https://github.com/asanchezx96" target="_blank" rel="noopener noreferrer"
-            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: "0.72rem", color: "var(--txt-3)", fontFamily: "monospace", textDecoration: "none", transition: "color .15s" }}
-            onMouseEnter={e => (e.currentTarget.style.color = "var(--accent)")}
-            onMouseLeave={e => (e.currentTarget.style.color = "var(--txt-3)")}
+          <a
+            href="https://github.com/asanchezx96"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: "0.72rem",
+              color: "var(--txt-3)",
+              fontFamily: "monospace",
+              textDecoration: "none",
+              transition: "color .15s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = "var(--accent)")
+            }
+            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--txt-3)")}
           >
-            <Github size={13} /> github.com/asanchezx96 <ExternalLink size={11} />
+            <Github size={13} /> github.com/asanchezx96{" "}
+            <ExternalLink size={11} />
           </a>
         </div>
         <ProjectGrid />
@@ -928,7 +1469,6 @@ function Projects() {
     </section>
   );
 }
-
 
 /* ─────────────────────────────────────────────
    CONTACT
