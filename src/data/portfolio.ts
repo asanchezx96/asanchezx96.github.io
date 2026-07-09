@@ -10,10 +10,34 @@ export const NAV = [
 
 /* ─ Skills ─ */
 export const SKILLS: { label: string; items: string[] }[] = [
-  { label: "Lenguajes",      items: ["PHP", "JavaScript", "TypeScript", "C#", "Visual Basic", "CSS", "HTML5"] },
-  { label: "Frameworks",     items: ["React", "Vue.js", "Angular", "Ionic", "Quasar", ".NET", "Vite", "Vuetify", "Material UI"] },
-  { label: "Bases de datos", items: ["MySQL", "SQL Server", "Firebird"] },
-  { label: "Herramientas",   items: ["Git", "Photoshop", "Soporte Técnico", "Diseño Gráfico", "Marketing Digital"] },
+  {
+    label: "Lenguajes",
+    items: ["PHP", "JavaScript", "TypeScript", "C#", "Visual Basic", "Python", "GDScript", "CSS", "HTML5"],
+  },
+  {
+    label: "Frameworks & Libs",
+    items: ["React", "Vue.js", "Angular", "Ionic", "Flutter", "Quasar", ".NET", "FastAPI", "Vite", "Vuetify", "Material UI", "Godot"],
+  },
+  {
+    label: "Bases de datos",
+    items: ["MySQL", "SQL Server", "PostgreSQL", "MongoDB", "Firebird"],
+  },
+  {
+    label: "Dev Tools",
+    items: ["Git", "GitHub", "Docker", "Postman", "VS Code", "Linux / Bash"],
+  },
+  {
+    label: "Despliegue & APIs",
+    items: ["Vercel", "IIS", "cPanel", "PM2", "Nginx", "SSH", "REST APIs", "WebSockets", "Swagger / OpenAPI", "GitHub Webhooks"],
+  },
+  {
+    label: "Diseño & Marketing",
+    items: ["Photoshop", "Figma", "Diseño Gráfico", "UI / UX", "Marketing Digital", "SEO"],
+  },
+  {
+    label: "Habilidades",
+    items: ["Soporte Técnico", "Liderazgo de Equipos", "Gestión de Proyectos", "Análisis de Requerimientos", "Metodologías Ágiles", "Documentación Técnica"],
+  },
 ];
 
 /* ─ Experience ─ */
@@ -135,48 +159,117 @@ export const EXPERIENCE: ExperienceItem[] = [
 ];
 
 /* ─ Projects ─ */
+export interface RepoLink {
+  label: string;
+  url: string;
+}
+
 export interface ProjectItem {
   id: number;
   name: string;
   type: string;
   description: string;
   tech: string[];
+  repos: RepoLink[];
+  url?: string;
+  folder?: string;
 }
 
 export const PROJECTS: ProjectItem[] = [
   {
     id: 1,
-    name: "Sistema de Gestión de Mantenimiento",
-    type: "Web App",
-    description: "Control y seguimiento de mantenimientos de tuberías con reportes y trazabilidad completa.",
-    tech: ["Angular", "Ionic", "C#", "SQL Server"],
+    name: "Arcan MMORPG",
+    folder: "arcan-mmorpg",
+    type: "Game / Full Stack",
+    description: "MMORPG en desarrollo con mundo persistente, sistema de combate en tiempo real, economía de jugadores y narrativa expansiva. Arquitectura distribuida con servidor de juego dedicado y cliente web/desktop.",
+    tech: ["TypeScript", "React", "C#", ".NET", "MySQL", "WebSockets"],
+    url: "https://github.com/asanchezx96/arcan-client",
+    repos: [
+      { label: "arcan-client", url: "https://github.com/asanchezx96/arcan-client" },
+      { label: "arcan-server", url: "https://github.com/asanchezx96/arcan-server" },
+      { label: "arcan-shared", url: "https://github.com/asanchezx96/arcan-shared" },
+    ],
   },
   {
     id: 2,
-    name: "Plataforma ERP — LarissaMX",
-    type: "ERP",
-    description: "Sistema ERP modular para control de inventario, ventas, compras y reportes en tiempo real.",
-    tech: ["Vue.js", "React", "PHP", "MySQL"],
+    name: "Arcan Warspace",
+    folder: "arcan-warspace",
+    type: "Game / Full Stack",
+    description: "Juego de estrategia espacial en tiempo real ambientado en el universo Arcan. Batallas entre flotas, conquista de sectores, diplomacia entre facciones y economía galáctica dinámica.",
+    tech: ["TypeScript", "React", "C#", ".NET", "MySQL", "WebSockets"],
+    url: "https://github.com/asanchezx96/warspace-client",
+    repos: [
+      { label: "warspace-client", url: "https://github.com/asanchezx96/warspace-client" },
+      { label: "warspace-server", url: "https://github.com/asanchezx96/warspace-server" },
+      { label: "warspace-assets", url: "https://github.com/asanchezx96/warspace-assets" },
+    ],
   },
   {
     id: 3,
-    name: "Sistema de Control de Grúas",
-    type: "Web App",
-    description: "Gestión operativa de flotilla de grúas: asignación de trabajos, seguimiento y facturación.",
-    tech: ["Vue.js", "PHP", "MySQL"],
+    name: "GuardSpace",
+    folder: "guardspace",
+    type: "Dev Tool / Workspace",
+    description: "Plataforma para guardar y restaurar workspaces de desarrollo completos. Cada workspace agrupa múltiples repositorios, archivos de configuración, documentación y tareas pendientes en un solo lugar. Si cambias de equipo, se te daña el equipo o simplemente necesitas retomar un proyecto desde cero, GuardSpace te permite restaurar todo tu entorno de trabajo exactamente como lo dejaste — sin perder ningún contexto.",
+    tech: ["Vue.js", "TypeScript", "C#", ".NET", "SQL Server", "WebSockets"],
+    url: "https://github.com/asanchezx96/guardspace-web",
+    repos: [
+      { label: "guardspace-web", url: "https://github.com/asanchezx96/guardspace-web" },
+      { label: "guardspace-api", url: "https://github.com/asanchezx96/guardspace-api" },
+      { label: "guardspace-mobile", url: "https://github.com/asanchezx96/guardspace-mobile" },
+    ],
   },
   {
     id: 4,
-    name: "App Móvil de Mantenimiento",
-    type: "Mobile",
-    description: "App híbrida para registro de órdenes de mantenimiento en campo con soporte offline.",
-    tech: ["Ionic", "Angular", "C#", "MySQL"],
+    name: "IA Agent Console",
+    folder: "ia-agent-console",
+    type: "Dev Tool / GCP",
+    description: "Herramienta de escritorio/web que centraliza la gestión de credenciales de Google Cloud Platform (GCP) sin necesidad de usar la terminal. Permite autenticarse con cuentas de GCP, seleccionar proyectos, gestionar service accounts, generar tokens y ejecutar operaciones directamente desde una interfaz gráfica intuitiva — eliminando la fricción del flujo de trabajo con gcloud CLI en el día a día.",
+    tech: ["React", "TypeScript", "Python", "FastAPI", "GCP", "OAuth 2.0"],
+    url: "https://github.com/asanchezx96/ia-agent-console",
+    repos: [
+      { label: "ia-agent-console", url: "https://github.com/asanchezx96/ia-agent-console" },
+      { label: "ia-agent-core", url: "https://github.com/asanchezx96/ia-agent-core" },
+    ],
   },
   {
     id: 5,
-    name: "Portafolio Personal",
-    type: "Sitio Web",
-    description: "Sitio web personal con diseño minimalista, modo oscuro y secciones de experiencia y proyectos.",
-    tech: ["React", "TypeScript", "Vite"],
+    name: "IntPro RH",
+    folder: "intpro-rh",
+    type: "ERP / Recursos Humanos",
+    description: "Sistema integral de gestión de recursos humanos: nómina, control de asistencia, expedientes digitales, evaluaciones de desempeño y reportes gerenciales en tiempo real.",
+    tech: ["React", "C#", ".NET", "SQL Server", "TypeScript"],
+    url: "https://github.com/asanchezx96/intpro-rh-web",
+    repos: [
+      { label: "intpro-rh-web", url: "https://github.com/asanchezx96/intpro-rh-web" },
+      { label: "intpro-rh-api", url: "https://github.com/asanchezx96/intpro-rh-api" },
+      { label: "intpro-rh-mobile", url: "https://github.com/asanchezx96/intpro-rh-mobile" },
+    ],
+  },
+  {
+    id: 6,
+    name: "SavEnv",
+    folder: "savenv",
+    type: "SaaS / Dev Tool",
+    description: "Plataforma segura de gestión de variables de entorno con arquitectura zero-knowledge: las variables se encriptan en el cliente antes de llegar al servidor, por lo que nadie más puede leerlas. Soporta jerarquía completa de organizaciones: compañías, equipos con roles independientes, proyectos y asignación de equipos a proyectos. Cada miembro accede únicamente a las variables que le corresponden según su rol. Ideal para equipos que trabajan con múltiples entornos (dev, staging, prod) sin exponer credenciales sensibles.",
+    tech: ["Vue.js", "TypeScript", "Python", "FastAPI", "PostgreSQL", "AES-256"],
+    url: "https://github.com/asanchezx96/savenv-web",
+    repos: [
+      { label: "savenv-web", url: "https://github.com/asanchezx96/savenv-web" },
+      { label: "savenv-api", url: "https://github.com/asanchezx96/savenv-api" },
+      { label: "savenv-reports", url: "https://github.com/asanchezx96/savenv-reports" },
+    ],
+  },
+  {
+    id: 7,
+    name: "HCO Databoard",
+    folder: "hco-databoard",
+    type: "Dashboard / Business Intelligence",
+    description: "Dashboard empresarial para HCO Consultoría y Servicios: visualización de KPIs en tiempo real, gestión de reportes, análisis de datos operativos y panel administrativo centralizado.",
+    tech: ["React", "JavaScript", "C#", "MySQL"],
+    url: "https://github.com/asanchezx96/hco-databoard",
+    repos: [
+      { label: "hco-databoard", url: "https://github.com/asanchezx96/hco-databoard" },
+      { label: "hco-databoard-api", url: "https://github.com/asanchezx96/hco-databoard-api" },
+    ],
   },
 ];

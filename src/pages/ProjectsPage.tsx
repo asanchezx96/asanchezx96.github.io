@@ -1,5 +1,5 @@
 import { PROJECTS } from "@/data/portfolio";
-import { ArrowUpRight } from "lucide-react";
+import { GitBranch, ExternalLink } from "lucide-react";
 
 export default function ProjectsPage() {
   return (
@@ -24,27 +24,59 @@ export default function ProjectsPage() {
         <div className="pgrid">
           {PROJECTS.map(p => (
             <div key={p.id} className="pcell">
-              <div
-                style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}
-              >
-                <h3
-                  style={{ fontWeight: 600, fontSize: "0.95rem", color: "var(--txt)", lineHeight: 1.35, flex: 1 }}
-                >
+              {/* Header */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+                <h3 style={{ fontWeight: 600, fontSize: "0.95rem", color: "var(--txt)", lineHeight: 1.35, flex: 1 }}>
                   {p.name}
                 </h3>
-                <ArrowUpRight size={15} style={{ color: "var(--txt-3)", marginLeft: 10, flexShrink: 0, marginTop: 2 }} />
+                <span className="tag" style={{ fontSize: "0.68rem", marginLeft: 10, flexShrink: 0 }}>{p.type}</span>
               </div>
 
-              <p
-                style={{ fontSize: "0.85rem", color: "var(--txt-2)", lineHeight: 1.65, marginBottom: 18 }}
-              >
+              {/* Description */}
+              <p style={{ fontSize: "0.85rem", color: "var(--txt-2)", lineHeight: 1.65, marginBottom: 16 }}>
                 {p.description}
               </p>
 
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                <span className="tag" style={{ fontSize: "0.72rem" }}>{p.type}</span>
+              {/* Tech tags */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
                 {p.tech.map(t => (
                   <span key={t} className="tag" style={{ fontSize: "0.72rem" }}>{t}</span>
+                ))}
+              </div>
+
+              {/* Repos */}
+              <div style={{ borderTop: "1px solid var(--border)", paddingTop: 14, display: "flex", flexWrap: "wrap", gap: 8 }}>
+                <GitBranch size={13} style={{ color: "var(--txt-3)", marginTop: 2, flexShrink: 0 }} />
+                {p.repos.map(repo => (
+                  <a
+                    key={repo.label}
+                    href={repo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      fontSize: "0.72rem",
+                      color: "var(--txt-2)",
+                      textDecoration: "none",
+                      padding: "2px 8px",
+                      borderRadius: 4,
+                      border: "1px solid var(--border)",
+                      transition: "color 0.15s, border-color 0.15s",
+                    }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.color = "var(--txt)";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--txt-3)";
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLAnchorElement).style.color = "var(--txt-2)";
+                      (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border)";
+                    }}
+                  >
+                    {repo.label}
+                    <ExternalLink size={10} />
+                  </a>
                 ))}
               </div>
             </div>

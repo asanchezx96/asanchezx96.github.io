@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Mail, ArrowUpRight } from "lucide-react";
-import img from "@/assets/yo.jpg";
+import img from "@/assets/yo.png";
 
 const STATS = [
   { n: "6+", l: "Años de exp." },
@@ -77,15 +77,26 @@ export default function HeroPage() {
 
             <div
               className="fu d4"
-              style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 44 }}
+              style={{
+                display: "flex",
+                gap: 8,
+                flexWrap: "wrap",
+                marginBottom: 44,
+              }}
             >
-              <a href="mailto:alex_180796@hotmail.com" className="btn btn-solid">
+              <a
+                href="mailto:alex_180796@hotmail.com"
+                className="btn btn-solid"
+              >
                 <Mail size={13} />
                 Contáctame
               </a>
               <button
                 className="btn btn-ghost"
-                onClick={() => { navigate("/projects"); window.scrollTo(0, 0); }}
+                onClick={() => {
+                  navigate("/projects");
+                  window.scrollTo(0, 0);
+                }}
               >
                 Ver proyectos <ArrowUpRight size={13} />
               </button>
@@ -134,7 +145,11 @@ export default function HeroPage() {
           {/* ── Photo ── */}
           <div
             className="hidden md:block"
-            style={{ alignSelf: "stretch", display: "flex", alignItems: "center" }}
+            style={{
+              alignSelf: "stretch",
+              display: "flex",
+              alignItems: "center",
+            }}
           >
             <div
               style={{
@@ -182,7 +197,10 @@ export default function HeroPage() {
           ].map((l) => (
             <button
               key={l.path}
-              onClick={() => { navigate(l.path); window.scrollTo(0, 0); }}
+              onClick={() => {
+                navigate(l.path);
+                window.scrollTo(0, 0);
+              }}
               style={{
                 background: "none",
                 border: "none",
@@ -197,7 +215,9 @@ export default function HeroPage() {
                 transition: "color .18s",
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = "var(--txt)")}
-              onMouseLeave={(e) => (e.currentTarget.style.color = "var(--txt-3)")}
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "var(--txt-3)")
+              }
             >
               {l.label} <ArrowUpRight size={11} />
             </button>

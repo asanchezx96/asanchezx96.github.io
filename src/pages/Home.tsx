@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import img from "../assets/yo.jpeg";
+import { useState, useEffect, useRef } from "react";
+import img from "../assets/yo.png";
 import {
   Mail,
   Phone,
@@ -9,21 +9,18 @@ import {
   Sun,
   Menu,
   X,
-  ArrowUpRight,
+  ArrowUp,
   Linkedin,
-  Terminal,
-  Laptop,
-  Database,
-  PenTool,
   ExternalLink,
+  GitBranch,
+  ChevronDown,
 } from "lucide-react";
 import { useTheme } from "@/stores/useTheme";
 import { NAV, SKILLS, EXPERIENCE, PROJECTS } from "@/data/portfolio";
 
-/* ═══════════════════════════════════════════════════════════
-   HELPERS & DATA MAPPING
-   We map the paths from portfolio.ts to anchors
-═══════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────
+   ANCHOR SCROLL
+───────────────────────────────────────────── */
 const SECTION_MAP: Record<string, string> = {
   "/": "hero",
   "/about": "about",
@@ -33,23 +30,15 @@ const SECTION_MAP: Record<string, string> = {
   "/contact": "contact",
 };
 
-const go = (id: string) => {
-  const element = document.getElementById(id);
-  if (element) {
-    const offset = 70;
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth",
-    });
-  }
+const scrollTo = (id: string) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  window.scrollTo({ top: el.offsetTop - 52, behavior: "smooth" });
 };
 
-/* ═══════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────
    NAVBAR
-═══════════════════════════════════════════════════════════ */
+───────────────────────────────────────────── */
 function Navbar() {
   const { dark, toggle } = useTheme();
   const [scrolled, setScrolled] = useState(false);
@@ -57,56 +46,100 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-
-      // Determine active section
-      const sections = Object.values(SECTION_MAP);
-      for (const section of [...sections].reverse()) {
-        const el = document.getElementById(section);
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActive(section);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      const ids = Object.values(SECTION_MAP);
+      for (const id of [...ids].reverse()) {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 100) {
+          setActive(id);
           break;
         }
       }
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-        scrolled
-          ? "bg-opacity-80 backdrop-blur-lg border-b border-[var(--border)]"
-          : "bg-transparent"
-      }`}
-      style={{ background: scrolled ? "var(--bg)" : "transparent" }}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        background: "var(--bg)",
+        borderBottom: scrolled
+          ? "1px solid var(--border)"
+          : "1px solid transparent",
+        transition: "border-color .2s",
+        height: 52,
+      }}
     >
-      <div className="max-w-[1280px] mx-auto px-6 h-[72px] flex items-center justify-between">
+      <div
+        style={{
+          maxWidth: 1040,
+          margin: "0 auto",
+          padding: "0 24px",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         {/* Logo */}
         <button
-          onClick={() => go("hero")}
-          className="text-[var(--txt)] font-mono font-bold text-xl tracking-tighter hover:opacity-70 transition-opacity flex items-center gap-2"
+          onClick={() => scrollTo("hero")}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontFamily: "monospace",
+            fontSize: "0.9rem",
+            fontWeight: 700,
+            color: "var(--txt)",
+            letterSpacing: "-0.02em",
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
         >
-          <span className="text-[var(--primary)]">&lt;</span>
-          asv
-          <span className="text-[var(--primary)]">/&gt;</span>
+          <span style={{ color: "var(--accent)" }}>&lt;</span>asv
+          <span style={{ color: "var(--accent)" }}>/&gt;</span>
         </button>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 glass px-8 py-2 rounded-full border border-[var(--border)]">
+        {/* Desktop */}
+        <div className="hidden md:flex" style={{ gap: 32 }}>
           {NAV.map((n) => {
-            const sectionId = SECTION_MAP[n.path];
+            const id = SECTION_MAP[n.path];
+            const isOn = active === id;
             return (
               <button
                 key={n.path}
-                className={`text-[0.75rem] font-mono tracking-wide uppercase transition-all duration-200 ${
-                  active === sectionId
-                    ? "text-[var(--primary)]"
-                    : "text-[var(--txt-3)] hover:text-[var(--txt)]"
-                }`}
-                onClick={() => go(sectionId)}
+                onClick={() => scrollTo(id)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontFamily: "monospace",
+                  fontSize: "0.72rem",
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  color: isOn ? "var(--accent)" : "var(--txt-3)",
+                  transition: "color .15s",
+                  padding: 0,
+                }}
+                onMouseEnter={(e) => {
+                  if (!isOn)
+                    (e.currentTarget as HTMLElement).style.color = "var(--txt)";
+                }}
+                onMouseLeave={(e) => {
+                  if (!isOn)
+                    (e.currentTarget as HTMLElement).style.color =
+                      "var(--txt-3)";
+                }}
               >
                 {n.label}
               </button>
@@ -115,35 +148,64 @@ function Navbar() {
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-4">
-          <div className="h-8 w-[1px] bg-[var(--border)] hidden md:block" />
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button
             onClick={toggle}
-            className="p-2 text-[var(--txt-3)] hover:text-[var(--txt)] transition-colors"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "var(--txt-3)",
+              display: "flex",
+              padding: 4,
+            }}
             title={dark ? "Modo claro" : "Modo oscuro"}
           >
-            {dark ? <Sun size={18} /> : <Moon size={18} />}
+            {dark ? <Sun size={14} /> : <Moon size={14} />}
           </button>
-
           <button
-            className="md:hidden p-2 text-[var(--txt-2)]"
-            onClick={() => setOpen(!open)}
+            className="md:hidden"
+            onClick={() => setOpen((o) => !o)}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "var(--txt-2)",
+              display: "flex",
+            }}
           >
-            {open ? <X size={20} /> : <Menu size={20} />}
+            {open ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-[var(--bg)] border-b border-[var(--border)] px-6 py-4 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4 duration-300">
+        <div
+          style={{
+            background: "var(--bg)",
+            borderTop: "1px solid var(--border)",
+            padding: "8px 24px 14px",
+          }}
+        >
           {NAV.map((n) => (
             <button
               key={n.path}
-              className="text-left text-[var(--txt-2)] py-2 text-lg font-medium"
               onClick={() => {
-                go(SECTION_MAP[n.path]);
+                scrollTo(SECTION_MAP[n.path]);
                 setOpen(false);
+              }}
+              style={{
+                display: "block",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "8px 0",
+                fontFamily: "monospace",
+                fontSize: "0.8rem",
+                color: "var(--txt-2)",
+                textAlign: "left",
+                width: "100%",
               }}
             >
               {n.label}
@@ -155,293 +217,371 @@ function Navbar() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────
    HERO
-═══════════════════════════════════════════════════════════ */
+───────────────────────────────────────────── */
 function Hero() {
   return (
     <section
       id="hero"
-      className="min-h-screen flex items-center relative overflow-hidden bg-[var(--bg)]"
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        paddingTop: 52,
+        borderBottom: "1px solid var(--border)",
+      }}
     >
-      {/* Background Accent */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--primary)]/5 to-transparent -z-10 hidden lg:block" />
-      
-      <div className="w-full max-w-[1440px] mx-auto">
-        <div className="grid lg:grid-cols-[1.2fr,0.8fr] min-h-screen items-stretch">
-          {/* Text Content / Editor Area */}
-          <div className="flex flex-col justify-center px-6 py-20 lg:px-16 xl:px-24 order-2 lg:order-1 relative z-10 border-r border-[var(--border)] bg-[var(--surface)]/30 backdrop-blur-sm">
-            {/* IDE Line Numbers Decoration */}
-            <div className="absolute left-4 top-0 bottom-0 w-8 hidden xl:flex flex-col items-center py-20 text-[var(--txt-3)] font-mono text-xs opacity-20 select-none">
-              {Array.from({ length: 40 }).map((_, i) => (
-                <div key={i} className="h-6 flex items-center">{(i + 1).toString().padStart(2, '0')}</div>
-              ))}
-            </div>
-
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-[var(--subtle)] border border-[var(--border)] mb-10 w-fit animate-in fade-in slide-in-from-left-4 duration-700">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--primary)] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--primary)]"></span>
+      <div
+        style={{
+          maxWidth: 1040,
+          margin: "0 auto",
+          padding: "64px 24px 80px",
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto",
+            gap: 64,
+            alignItems: "center",
+          }}
+          className="hero-grid"
+        >
+          {/* Left */}
+          <div>
+            {/* Status pill */}
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 32,
+                border: "1px solid var(--border)",
+                padding: "4px 12px",
+              }}
+            >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: "var(--accent)",
+                  display: "inline-block",
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "0.68rem",
+                  color: "var(--txt-3)",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}
+              >
+                disponible para proyectos
               </span>
-              <span className="text-[0.7rem] font-mono font-bold uppercase tracking-[0.2em] text-[var(--primary)]">
-                system.status == "online"
-              </span>
             </div>
 
-            <div className="space-y-2 mb-10">
-              <p className="font-mono text-[var(--secondary)] text-lg">&lt;h1&gt;</p>
-              <h1 className="text-[clamp(3rem,8vw,6.5rem)] font-extrabold leading-[0.9] tracking-tighter text-[var(--txt)] font-space animate-in fade-in slide-in-from-up-8 duration-1000">
-                Alexis<br />
-                Rodrigo<br />
-                <span className="text-gradient">Sánchez</span>
-              </h1>
-              <p className="font-mono text-[var(--secondary)] text-lg">&lt;/h1&gt;</p>
-            </div>
+            <h1
+              className="fu d1"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "clamp(2.8rem, 6vw, 5.2rem)",
+                fontWeight: 800,
+                lineHeight: 1.0,
+                letterSpacing: "-0.045em",
+                color: "var(--txt)",
+                marginBottom: 24,
+              }}
+            >
+              Alexis Rodrigo
+              <br />
+              <span style={{ color: "var(--accent)" }}>Sánchez</span> Vázquez
+            </h1>
 
-            <p className="text-xl lg:text-2xl text-[var(--txt-2)] max-w-[540px] mb-14 leading-relaxed font-medium animate-in fade-in slide-in-from-up-10 duration-1000 delay-200">
-              Senior Software Engineer. 
-              <span className="text-[var(--txt)]"> Building scalable architectures</span> and 
-              high-impact digital experiences. +6 years of expertise. 
+            <p
+              className="fu d2"
+              style={{
+                fontFamily: "monospace",
+                fontSize: "0.8rem",
+                color: "var(--txt-3)",
+                marginBottom: 8,
+                letterSpacing: "0.04em",
+              }}
+            >
+              // Senior Software Engineer · 6+ años
+            </p>
+            <p
+              className="fu d3"
+              style={{
+                fontSize: "0.93rem",
+                color: "var(--txt-2)",
+                lineHeight: 1.75,
+                maxWidth: 480,
+                marginBottom: 40,
+              }}
+            >
+              Especialista en desarrollo full-stack: plataformas web, apps
+              móviles y arquitecturas de software escalables. Enfocado en código
+              limpio y soluciones de impacto real.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 mb-16 animate-in fade-in slide-in-from-up-12 duration-1000 delay-300">
+            {/* CTA */}
+            <div
+              className="fu d4"
+              style={{
+                display: "flex",
+                gap: 10,
+                flexWrap: "wrap",
+                marginBottom: 48,
+              }}
+            >
               <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  go("contact");
-                }}
-                className="group relative bg-[var(--txt)] text-[var(--bg)] px-12 py-6 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-[var(--primary)]/20"
+                href="mailto:alex_180796@hotmail.com"
+                className="btn btn-solid"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] opacity-0 group-hover:opacity-20 transition-opacity" />
-                <Mail size={22} className="relative z-10" /> 
-                <span className="relative z-10">Trabajemos juntos</span>
+                <Mail size={13} /> Contáctame
               </a>
-              <a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault();
-                  go("projects");
-                }}
-                className="bg-transparent text-[var(--txt)] border-2 border-[var(--border)] px-12 py-6 rounded-2xl font-bold text-lg flex items-center justify-center gap-3 hover:bg-[var(--surface)] hover:border-[var(--txt)] transition-all"
+              <button
+                className="btn btn-ghost"
+                onClick={() => scrollTo("projects")}
               >
-                Ver proyectos
-              </a>
+                Ver proyectos <ExternalLink size={12} />
+              </button>
             </div>
 
-            {/* Background elements for image */}
-            <div className="absolute -top-20 -right-20 w-80 h-80 bg-[var(--primary)]/10 rounded-full blur-[120px] -z-10 animate-pulse" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-[var(--secondary)]/10 rounded-full blur-[100px] -z-10" />
-          </div>
-
-          {/* Hero Image / Code View */}
-          <div className="hidden lg:flex items-center justify-center p-16 relative order-2">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_70%)] opacity-5 -z-10" />
-            
-            <div className="relative w-full max-w-[500px]"> {/* Contenedor más pequeño para la foto */}
-              <div className="code-card shadow-2xl animate-in fade-in slide-in-from-right-10 duration-1000 delay-200">
-                <div className="code-dots">
-                  <div className="code-dot dot-r" />
-                  <div className="code-dot dot-y" />
-                  <div className="code-dot dot-g" />
-                </div>
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[var(--txt-3)] font-mono text-[10px]">
-                  profile_render.tsx
-                </div>
-                
-                <div className="p-1 pt-12">
-                  <div className="relative aspect-[4/5] rounded-lg overflow-hidden border border-[var(--border)] m-3">
-                    <img 
-                      src={img} 
-                      alt="Alexis Sánchez" 
-                      className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)]/80 via-transparent to-transparent pointer-events-none" />
-                    
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <div className="glass p-4 rounded-xl border border-white/5 backdrop-blur-md">
-                        <p className="text-[10px] font-mono text-[var(--primary)] mb-1 uppercase tracking-widest">status</p>
-                        <p className="text-sm font-mono text-white">Active and building</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-6 font-mono text-sm space-y-2 opacity-60">
-                    <div className="flex gap-4">
-                      <span className="text-[var(--txt-3)]">01</span>
-                      <p><span className="text-pink-400">const</span> <span className="text-blue-400">dev</span> = &#123;</p>
-                    </div>
-                    <div className="flex gap-4">
-                      <span className="text-[var(--txt-3)]">02</span>
-                      <p className="pl-4">name: <span className="text-green-400">'Alexis Rodrigo'</span>,</p>
-                    </div>
-                    <div className="flex gap-4">
-                      <span className="text-[var(--txt-3)]">03</span>
-                      <p className="pl-4">role: <span className="text-green-400">'Senior Software Engineer'</span>,</p>
-                    </div>
-                    <div className="flex gap-4">
-                      <span className="text-[var(--txt-3)]">04</span>
-                      <p>&#125;;</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Floating badges */}
-              <div className="absolute -top-6 -right-6 glass p-4 rounded-2xl border border-[var(--primary)]/30 animate-bounce duration-[3000ms]">
-                <Terminal className="text-[var(--primary)]" size={24} />
-              </div>
-              <div className="absolute -bottom-10 -left-10 glass p-5 rounded-2xl border border-[var(--secondary)]/30 animate-pulse">
-                <Laptop className="text-[var(--secondary)]" size={28} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
-   ABOUT
-═══════════════════════════════════════════════════════════ */
-function About() {
-  return (
-    <section id="about" className="py-24 border-t border-[var(--border)] bg-[var(--bg)] grid-bg relative">
-      <div className="max-w-[1040px] mx-auto px-6 relative z-10">
-        <span className="text-[0.7rem] font-mono font-bold uppercase tracking-[0.2em] text-[var(--primary)] mb-4 block">
-          01. about_me
-        </span>
-        <div className="grid md:grid-cols-[1fr,400px] gap-16">
-          <div className="space-y-6">
-            <h2 className="text-4xl font-bold text-[var(--txt)] leading-tight tracking-tight">
-              Crafting <span className="text-[var(--primary)]">efficient</span> code for complex problems.
-            </h2>
-            <div className="space-y-4 text-[var(--txt-2)] leading-relaxed text-lg">
-              <p>
-                Soy un ingeniero enfocado en el rendimiento y la escalabilidad. 
-                Mi enfoque mezcla el rigor de la ingeniería industrial con la 
-                creatividad del desarrollo moderno.
-              </p>
-              <p>
-                Especializado en arquitecturas distribuidas, integración de IA 
-                y optimización de procesos de desarrollo (DevOps). Mi meta es 
-                siempre reducir la fricción técnica y maximizar el valor de negocio.
-              </p>
-            </div>
-          </div>
-
-          <div className="code-card group hover:border-[var(--primary)]/50 transition-colors">
-            <div className="code-dots">
-              <div className="code-dot dot-r" />
-              <div className="code-dot dot-y" />
-              <div className="code-dot dot-g" />
-            </div>
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[var(--txt-3)] font-mono text-[10px]">
-              contact_info.json
-            </div>
-            
-            <div className="p-10 pt-14 space-y-6">
+            {/* Stats */}
+            <div
+              className="fu d5"
+              style={{
+                display: "flex",
+                gap: 40,
+                paddingTop: 28,
+                borderTop: "1px solid var(--border)",
+              }}
+            >
               {[
-                {
-                  icon: <Mail size={18} />,
-                  label: "email",
-                  value: "alex_180796@hotmail.com",
-                  href: "mailto:alex_180796@hotmail.com",
-                },
-                {
-                  icon: <Phone size={18} />,
-                  label: "phone",
-                  value: "+52 954 342 6612",
-                  href: "tel:+529543426612",
-                },
-                {
-                  icon: <MapPin size={18} />,
-                  label: "location",
-                  value: "Carmen, Campeche, MX",
-                  href: "#",
-                },
-                {
-                  icon: <Linkedin size={18} />,
-                  label: "social",
-                  value: "/in/asanchezx96/",
-                  href: "https://www.linkedin.com/in/asanchezx96/",
-                },
-              ].map((item, i) => (
-                <a
-                  key={i}
-                  href={item.href}
-                  target={item.href.startsWith("http") ? "_blank" : undefined}
-                  className="flex items-center gap-4 group/item hover:translate-x-1 transition-transform"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-[var(--subtle)] flex items-center justify-center text-[var(--txt-3)] group-hover/item:text-[var(--primary)] transition-colors border border-[var(--border)]">
-                    {item.icon}
+                { n: "6+", l: "Años exp." },
+                { n: "8+", l: "Empresas" },
+                { n: "10+", l: "Tecnologías" },
+                { n: "6", l: "Proyectos" },
+              ].map((s) => (
+                <div key={s.l}>
+                  <div
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontSize: "1.8rem",
+                      fontWeight: 800,
+                      color: "var(--accent)",
+                      lineHeight: 1,
+                      letterSpacing: "-0.05em",
+                    }}
+                  >
+                    {s.n}
                   </div>
-                  <div>
-                    <p className="text-[10px] font-mono uppercase tracking-widest text-[var(--txt-3)]">
-                      {item.label}
-                    </p>
-                    <p className="text-[1rem] text-[var(--txt)] font-mono">
-                      {item.value}
-                    </p>
+                  <div
+                    style={{
+                      fontSize: "0.64rem",
+                      color: "var(--txt-3)",
+                      marginTop: 5,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.13em",
+                      fontFamily: "monospace",
+                    }}
+                  >
+                    {s.l}
                   </div>
-                </a>
+                </div>
               ))}
             </div>
           </div>
+
+          {/* Right — photo */}
+          <div
+            className="hidden md:block"
+            style={{ width: 260, flexShrink: 0 }}
+          >
+            <div
+              style={{
+                width: "100%",
+                aspectRatio: "3/4",
+                overflow: "hidden",
+                border: "1px solid var(--border)",
+              }}
+            >
+              <img
+                src={img}
+                alt="Alexis Rodrigo Sánchez Vázquez"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "top center",
+                  display: "block",
+                  filter: "grayscale(30%)",
+                }}
+              />
+            </div>
+            <div
+              style={{
+                borderLeft: "1px solid var(--border)",
+                borderRight: "1px solid var(--border)",
+                borderBottom: "1px solid var(--border)",
+                padding: "10px 14px",
+                fontFamily: "monospace",
+                fontSize: "0.68rem",
+                color: "var(--txt-3)",
+              }}
+            >
+              <span style={{ color: "var(--accent)" }}>$ </span>whoami ·
+              Tabasco, MX
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   SKILLS
-═══════════════════════════════════════════════════════════ */
-function Skills() {
-  const getIcon = (label: string) => {
-    if (label.includes("Lenguajes")) return <Terminal size={18} />;
-    if (label.includes("Frameworks")) return <Laptop size={18} />;
-    if (label.includes("Bases")) return <Database size={18} />;
-    return <PenTool size={18} />;
-  };
-
+/* ─────────────────────────────────────────────
+   ABOUT
+───────────────────────────────────────────── */
+function About() {
   return (
-    <section
-      id="skills"
-      className="py-24 border-t border-[var(--border)] bg-[var(--bg)]"
-    >
-      <div className="max-w-[1040px] mx-auto px-6">
-        <span className="text-[0.7rem] font-mono font-bold uppercase tracking-[0.2em] text-[var(--secondary)] mb-4 block">
-          02. tech_stack
-        </span>
-        <h2 className="text-3xl font-bold text-[var(--txt)] mb-12 tracking-tight">
-          Tools & <span className="text-[var(--secondary)]">Technologies</span>.
+    <section id="about" style={{ borderBottom: "1px solid var(--border)" }}>
+      {/* Constrained content */}
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px 48px" }}>
+        <span className="label">01 · sobre mí</span>
+
+        <div
+          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64 }}
+          className="about-grid"
+        >
+          <div>
+            <h2
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "clamp(1.5rem, 2.8vw, 2rem)",
+                fontWeight: 700,
+                letterSpacing: "-0.04em",
+                color: "var(--txt)",
+                marginBottom: 20,
+                lineHeight: 1.25,
+              }}
+            >
+              Desarrollador full-stack
+              <br />
+              con visión de producto
+            </h2>
+            <p style={{ fontSize: "0.88rem", color: "var(--txt-2)", lineHeight: 1.8, marginBottom: 14 }}>
+              Desarrollo software desde pequeños proyectos hasta sistemas
+              empresariales. Me especializo en aplicaciones web full-stack y
+              móviles híbridas, con enfoque en calidad de código y experiencia
+              de usuario.
+            </p>
+            <p style={{ fontSize: "0.88rem", color: "var(--txt-2)", lineHeight: 1.8 }}>
+              He trabajado en múltiples roles — desarrollador, líder de
+              proyectos, soporte técnico y diseñador — lo que me da una visión
+              integral de cualquier producto digital.
+            </p>
+          </div>
+
+          {/* Contacto */}
+          <div>
+            <span className="label">contacto</span>
+            {[
+              { icon: <Mail size={13} />, label: "Email",     val: "alex_180796@hotmail.com",       href: "mailto:alex_180796@hotmail.com" },
+              { icon: <Phone size={13} />, label: "Teléfono", val: "961 633 4735",                  href: "tel:+529616334735" },
+              { icon: <MapPin size={13} />, label: "Ubicación",val: "Tabasco, México",              href: "#" },
+              { icon: <Linkedin size={13} />, label: "LinkedIn",val: "/in/asanchezx96",             href: "https://www.linkedin.com/in/asanchezx96/" },
+              { icon: <Github size={13} />, label: "GitHub",  val: "asanchezx96",                  href: "https://github.com/asanchezx96" },
+            ].map((c) => (
+              <a
+                key={c.label}
+                href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel="noopener noreferrer"
+                style={{ display: "grid", gridTemplateColumns: "14px 80px 1fr", gap: 12, alignItems: "center", padding: "12px 0", borderBottom: "1px solid var(--border)", color: "var(--txt-2)", fontSize: "0.83rem", textDecoration: "none", transition: "color .15s" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--accent)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "var(--txt-2)")}
+              >
+                <span style={{ color: "var(--txt-3)" }}>{c.icon}</span>
+                <span style={{ fontSize: "0.64rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--txt-3)", fontFamily: "monospace" }}>{c.label}</span>
+                <span>{c.val}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Specialties grid — same width as other sections */}
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "0 24px 0" }}>
+      <div className="spec-grid" style={{ borderTop: "1px solid var(--border)", borderLeft: "1px solid var(--border)" }}>
+        {[
+          { t: "Desarrollo Web",  d: "React · Vue.js · Angular · TypeScript" },
+          { t: "Apps Móviles",   d: "Ionic · Flutter · Android / iOS" },
+          { t: "Backend & APIs",  d: "PHP · .NET · Python · FastAPI · REST · WebSockets" },
+          { t: "Bases de Datos",  d: "MySQL · PostgreSQL · MongoDB · SQL Server" },
+          { t: "Despliegue",      d: "Vercel · Nginx · IIS · cPanel · Docker · SSH" },
+          { t: "Diseño & Más",   d: "Photoshop · Figma · Marketing Digital · SEO" },
+        ].map(c => (
+          <div
+            key={c.t}
+            style={{ padding: "20px 24px", background: "var(--surface)", borderBottom: "1px solid var(--border)", borderRight: "1px solid var(--border)", transition: "background .15s" }}
+            onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.background = "var(--subtle)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.background = "var(--surface)")}
+          >
+            <div style={{ fontSize: "0.78rem", fontWeight: 600, color: "var(--txt)", marginBottom: 5 }}>{c.t}</div>
+            <div style={{ fontSize: "0.68rem", color: "var(--txt-3)", fontFamily: "monospace", lineHeight: 1.6 }}>{c.d}</div>
+          </div>
+        ))}
+      </div>
+      </div>
+    </section>
+
+  );
+}
+
+
+
+/* ─────────────────────────────────────────────
+   SKILLS
+───────────────────────────────────────────── */
+function Skills() {
+  return (
+    <section id="skills" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px" }}>
+        <span className="label">02 · stack tecnológico</span>
+        <h2
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: "clamp(1.5rem, 2.8vw, 2rem)",
+            fontWeight: 700,
+            letterSpacing: "-0.04em",
+            color: "var(--txt)",
+            marginBottom: 40,
+            lineHeight: 1.2,
+          }}
+        >
+          Herramientas & Tecnologías
         </h2>
 
-        <div className="grid sm:grid-cols-2 gap-6">
-          {SKILLS.map((group, idx) => (
+        <div style={{ borderTop: "1px solid var(--border)" }}>
+          {SKILLS.map(g => (
             <div
-              key={idx}
-              className="p-8 rounded-xl bg-[var(--surface)] border border-[var(--border)] hover:border-[var(--secondary)]/30 transition-all duration-300 group relative overflow-hidden"
+              key={g.label}
+              className="skrow"
             >
-              <div className="absolute -right-4 -top-4 text-[var(--subtle)] group-hover:text-[var(--secondary)]/5 transition-colors">
-                {getIcon(group.label)}
-              </div>
-              
-              <div className="flex items-center gap-3 mb-6 relative z-10">
-                <div className="p-2.5 rounded-lg bg-[var(--subtle)] text-[var(--secondary)] border border-[var(--border)]">
-                  {getIcon(group.label)}
-                </div>
-                <h3 className="text-lg font-mono font-bold text-[var(--txt)]">
-                  {group.label.toLowerCase().replace(" ", "_")}
-                </h3>
-              </div>
-              <div className="flex flex-wrap gap-2 relative z-10">
-                {group.items.map((item) => (
+              <span className="skrow-label">{g.label}</span>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {g.items.map(item => (
                   <span
                     key={item}
-                    className="px-3 py-1.5 rounded-md bg-[var(--bg)] text-[var(--txt-2)] font-mono text-[0.75rem] border border-[var(--border)] hover:text-[var(--secondary)] hover:border-[var(--secondary)]/50 transition-all cursor-default"
+                    style={{ display: "inline-flex", alignItems: "center", padding: "3px 10px", border: "1px solid var(--border)", fontSize: "0.73rem", color: "var(--txt-2)", background: "var(--surface)", fontFamily: "monospace", cursor: "default", transition: "border-color .15s, color .15s" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; (e.currentTarget as HTMLElement).style.color = "var(--txt-2)"; }}
                   >
                     {item}
                   </span>
@@ -455,276 +595,549 @@ function Skills() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────
    EXPERIENCE
-═══════════════════════════════════════════════════════════ */
+───────────────────────────────────────────── */
 function Experience() {
+  const [open, setOpen] = useState<number | null>(null);
+
   return (
-    <section id="experience" className="py-24 border-t border-[var(--border)] bg-[var(--bg)] grid-bg relative">
-      <div className="max-w-[1040px] mx-auto px-6 relative z-10">
-        <span className="text-[0.7rem] font-mono font-bold uppercase tracking-[0.2em] text-[var(--accent)] mb-4 block">
-          04. career_log
-        </span>
-        <h2 className="text-3xl font-bold text-[var(--txt)] mb-16 tracking-tight">
-          Professional <span className="text-[var(--accent)]">Path</span>.
+    <section
+      id="experience"
+      style={{ borderBottom: "1px solid var(--border)" }}
+    >
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px" }}>
+        <span className="label">03 · experiencia</span>
+        <h2
+          style={{
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontSize: "clamp(1.5rem, 2.8vw, 2rem)",
+            fontWeight: 700,
+            letterSpacing: "-0.04em",
+            color: "var(--txt)",
+            marginBottom: 40,
+            lineHeight: 1.2,
+          }}
+        >
+          Trayectoria profesional
         </h2>
 
-        <div className="relative">
-          {/* Vertical Git Line */}
-          <div className="absolute left-[11px] top-2 bottom-0 w-[2px] bg-gradient-to-b from-[var(--accent)] via-[var(--border)] to-transparent" />
-
-          <div className="space-y-16">
-            {EXPERIENCE.map((exp) => (
-              <div key={exp.id} className="relative pl-12 group">
-                {/* Commit Dot */}
-                <div className="absolute left-0 top-2 w-6 h-6 rounded-full bg-[var(--bg)] border-2 border-[var(--accent)] z-10 group-hover:scale-125 transition-transform duration-300 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-wrap items-center gap-4">
-                    <span className="text-[0.7rem] font-mono text-[var(--accent)] bg-[var(--accent)]/10 px-2 py-1 rounded border border-[var(--accent)]/20">
-                      {exp.date}
-                    </span>
-                    <h3 className="text-xl font-bold text-[var(--txt)] group-hover:text-[var(--accent)] transition-colors">
-                      {exp.company}
-                    </h3>
-                    <span className="text-[var(--txt-3)] text-sm font-mono opacity-60">
-                      @{exp.role.toLowerCase().replace(" ", "_")}
-                    </span>
+        <div>
+          {EXPERIENCE.map((e) => {
+            const isOpen = open === e.id;
+            return (
+              <div key={e.id}>
+                <button
+                  onClick={() => setOpen(isOpen ? null : e.id)}
+                  className="xrow"
+                >
+                  <span className="xrow-date" style={{ fontSize: "0.75rem", color: "var(--txt-3)", fontFamily: "monospace", whiteSpace: "nowrap" }}>{e.date}</span>
+                  <div>
+                    <span style={{ fontWeight: 600, fontSize: "0.92rem", color: isOpen ? "var(--accent)" : "var(--txt)", display: "block", transition: "color .15s" }}>{e.company}</span>
+                    <span style={{ fontSize: "0.8rem", color: "var(--txt-3)" }}>{e.role}</span>
                   </div>
+                  <ChevronDown size={14} style={{ color: "var(--txt-3)", transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .2s", flexShrink: 0 }} />
+                </button>
 
-                  <div className="code-card !bg-transparent !border-none !before:hidden">
-                    <div className="p-0 space-y-4">
-                      <div className="flex items-center gap-4 text-[var(--txt-3)] text-[10px] font-mono uppercase tracking-widest">
-                        <span className="flex items-center gap-1.5">
-                          <MapPin size={12} /> {exp.location}
-                        </span>
-                        <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
-                        <span>{exp.mode}</span>
-                      </div>
-
-                      <ul className="space-y-3">
-                        {exp.activities.map((act, i) => (
-                          <li
-                            key={i}
-                            className="flex gap-3 text-[var(--txt-2)] text-[0.95rem] leading-relaxed group/li"
+                {isOpen && (
+                  <div style={{ paddingBottom: 24, paddingLeft: 0, display: "flex", flexDirection: "column", gap: 12 }} className="xrow-detail">
+                    {e.location && (
+                      <p style={{ fontSize: "0.75rem", color: "var(--txt-3)", display: "flex", alignItems: "center", gap: 6, fontFamily: "monospace" }}>
+                        <MapPin size={11} /> {e.location} · {e.mode}
+                      </p>
+                    )}
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 6,
+                      }}
+                    >
+                      {e.activities.map((a, i) => (
+                        <li
+                          key={i}
+                          style={{
+                            fontSize: "0.86rem",
+                            color: "var(--txt-2)",
+                            display: "flex",
+                            gap: 10,
+                            alignItems: "flex-start",
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: "var(--accent)",
+                              flexShrink: 0,
+                              fontFamily: "monospace",
+                            }}
                           >
-                            <span className="text-[var(--accent)] font-mono opacity-40 group-hover/li:opacity-100 transition-opacity">
-                              &gt;
-                            </span>
-                            {act}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="flex flex-wrap gap-2 pt-4">
-                        {exp.tech.map((t) => (
+                            ›
+                          </span>{" "}
+                          {a}
+                        </li>
+                      ))}
+                    </ul>
+                    {e.tech.length > 0 && (
+                      <div
+                        style={{ display: "flex", flexWrap: "wrap", gap: 5 }}
+                      >
+                        {e.tech.map((t) => (
                           <span
                             key={t}
-                            className="px-2 py-1 rounded bg-[var(--surface)] text-[var(--txt-3)] text-[10px] font-mono border border-[var(--border)] hover:border-[var(--accent)]/50 hover:text-[var(--accent)] transition-all"
+                            style={{
+                              padding: "2px 8px",
+                              border: "1px solid var(--border)",
+                              fontSize: "0.68rem",
+                              color: "var(--txt-3)",
+                              fontFamily: "monospace",
+                              background: "var(--surface)",
+                            }}
                           >
                             #{t}
                           </span>
                         ))}
                       </div>
-                    </div>
+                    )}
                   </div>
-                </div>
+                )}
               </div>
+            );
+          })}
+          <div style={{ borderTop: "1px solid var(--border)" }} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   PROJECTS
+───────────────────────────────────────────── */
+const _projImages = import.meta.glob(
+  "../assets/projects/**/*.{png,jpg,jpeg,webp,gif,svg}",
+  { eager: true }
+) as Record<string, { default: string }>;
+
+function getProjectImages(folder: string): string[] {
+  return Object.entries(_projImages)
+    .filter(([path]) => path.includes(`/projects/${folder}/`))
+    .map(([, mod]) => (mod as any).default as string);
+}
+
+const CARD_ACCENTS = ["#00e676","#00bcd4","#7c4dff","#ff4081","#ff9800","#64dd17","#00b0ff"];
+
+/* ── Modal ── */
+function ProjectModal({ project, idx, onClose }: { project: typeof PROJECTS[0]; idx: number; onClose: () => void }) {
+  const [imgIdx, setImgIdx] = useState(0);
+  const images = getProjectImages(project.folder ?? "");
+  const color  = CARD_ACCENTS[idx % CARD_ACCENTS.length];
+  const init   = project.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+
+  // ESC to close
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight" && images.length > 1) setImgIdx(i => (i + 1) % images.length);
+      if (e.key === "ArrowLeft"  && images.length > 1) setImgIdx(i => (i - 1 + images.length) % images.length);
+    };
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, [onClose, images.length]);
+
+  // Lock scroll
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const prev = (e: React.MouseEvent) => { e.stopPropagation(); setImgIdx(i => (i - 1 + images.length) % images.length); };
+  const next = (e: React.MouseEvent) => { e.stopPropagation(); setImgIdx(i => (i + 1) % images.length); };
+
+  return (
+    <div
+      onClick={onClose}
+      style={{ position: "fixed", inset: 0, zIndex: 400, background: "rgba(0,0,0,0.88)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{ background: "var(--surface)", border: "1px solid var(--border)", width: "100%", maxWidth: 840, maxHeight: "90vh", display: "flex", flexDirection: "column", animation: "modalIn .2s cubic-bezier(0.16,1,0.3,1)" }}
+      >
+        {/* Header */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 20px", borderBottom: "1px solid var(--border)", flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--txt)" }}>{project.name}</span>
+            <span style={{ fontSize: "0.6rem", color: "var(--accent)", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.1em" }}>{project.type}</span>
+          </div>
+          <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--txt-3)", padding: 4, display: "flex", alignItems: "center", transition: "color .15s" }} onMouseEnter={e => (e.currentTarget.style.color = "var(--txt)")} onMouseLeave={e => (e.currentTarget.style.color = "var(--txt-3)")}>
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Body */}
+        <div className="modal-body">
+          {/* Left — Image carousel */}
+          <div style={{ position: "relative", background: "var(--bg)", borderRight: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 280 }}>
+            {images.length > 0 ? (
+              <>
+                <img
+                  src={images[imgIdx]}
+                  alt={`${project.name} screenshot ${imgIdx + 1}`}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", display: "block", maxHeight: 360 }}
+                />
+                {images.length > 1 && (<>
+                  {/* Arrows */}
+                  <button onClick={prev} className="modal-arrow modal-arrow-l"><span>‹</span></button>
+                  <button onClick={next} className="modal-arrow modal-arrow-r"><span>›</span></button>
+                  {/* Counter */}
+                  <div style={{ position: "absolute", top: 10, right: 10, fontFamily: "monospace", fontSize: "0.62rem", color: "var(--txt-3)", background: "var(--surface)", padding: "2px 8px", border: "1px solid var(--border)" }}>
+                    {imgIdx + 1} / {images.length}
+                  </div>
+                  {/* Dots */}
+                  <div style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6 }}>
+                    {images.map((_, i) => (
+                      <button key={i} onClick={e => { e.stopPropagation(); setImgIdx(i); }}
+                        style={{ width: 6, height: 6, border: "none", cursor: "pointer", padding: 0, background: i === imgIdx ? "var(--accent)" : "var(--border-2)", transition: "background .15s" }}
+                      />
+                    ))}
+                  </div>
+                </>)}
+              </>
+            ) : (
+              <div style={{ width: "100%", height: "100%", minHeight: 280, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontFamily: "monospace", fontSize: "4rem", fontWeight: 800, color, opacity: 0.15 }}>{init}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Right — Details */}
+          <div style={{ padding: 24, overflow: "auto", display: "flex", flexDirection: "column", gap: 20 }}>
+            <p style={{ fontSize: "0.83rem", color: "var(--txt-2)", lineHeight: 1.8 }}>{project.description}</p>
+
+            <div>
+              <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: "var(--txt-3)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>Stack</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {project.tech.map(t => (
+                  <span key={t} style={{ padding: "3px 8px", border: "1px solid var(--border)", fontSize: "0.65rem", color: "var(--txt-2)", fontFamily: "monospace", background: "var(--bg)" }}>{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: "var(--txt-3)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>Repositorios</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {project.repos.map(r => (
+                  <a key={r.label} href={r.url} target="_blank" rel="noopener noreferrer"
+                    style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "3px 9px", border: "1px solid var(--border)", fontSize: "0.65rem", color: "var(--txt-3)", fontFamily: "monospace", textDecoration: "none", transition: "color .15s, border-color .15s" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--accent)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--accent)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "var(--txt-3)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "var(--border)"; }}
+                  >
+                    <GitBranch size={10} /> {r.label} <ExternalLink size={9} />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {project.url && (
+              <a href={project.url} target="_blank" rel="noopener noreferrer"
+                className="btn btn-solid"
+                style={{ alignSelf: "flex-start", marginTop: "auto" }}
+              >
+                <ExternalLink size={12} /> Ver proyecto
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Grid ── */
+function ProjectGrid() {
+  const [active, setActive] = useState<{ project: typeof PROJECTS[0]; idx: number } | null>(null);
+
+  return (
+    <>
+      <div className="proj-grid">
+        {PROJECTS.map((p, idx) => {
+          const images = getProjectImages(p.folder ?? "");
+          const color  = CARD_ACCENTS[idx % CARD_ACCENTS.length];
+          const init   = p.name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+          const thumb  = images[0];
+          return (
+            <div key={p.id} className="proj-card" onClick={() => setActive({ project: p, idx })}>
+              {/* Thumbnail */}
+              <div style={{ height: 110, overflow: "hidden", position: "relative", background: "var(--subtle)", borderBottom: "1px solid var(--border)" }}>
+                {thumb
+                  ? <img src={thumb} alt={p.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  : (
+                    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <span style={{ fontFamily: "monospace", fontSize: "1.6rem", fontWeight: 800, color, opacity: 0.35 }}>{init}</span>
+                    </div>
+                  )
+                }
+                {images.length > 1 && (
+                  <div style={{ position: "absolute", top: 8, left: 8, fontFamily: "monospace", fontSize: "0.55rem", color: "var(--txt-3)", background: "rgba(0,0,0,0.55)", padding: "2px 6px" }}>
+                    {images.length} imgs
+                  </div>
+                )}
+              </div>
+              {/* Info */}
+              <div style={{ padding: "12px 14px" }}>
+                <div style={{ fontWeight: 600, fontSize: "0.84rem", color: "var(--txt)", marginBottom: 3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</div>
+                <div style={{ fontSize: "0.62rem", color: "var(--txt-3)", fontFamily: "monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.type}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {active && (
+        <ProjectModal
+          project={active.project}
+          idx={active.idx}
+          onClose={() => setActive(null)}
+        />
+      )}
+    </>
+  );
+}
+
+function Projects() {
+  return (
+    <section id="projects" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
+          <div>
+            <span className="label">04 · proyectos</span>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.5rem, 2.8vw, 2rem)", fontWeight: 700, letterSpacing: "-0.04em", color: "var(--txt)", lineHeight: 1.2 }}>
+              Casos de estudio
+            </h2>
+          </div>
+          <a href="https://github.com/asanchezx96" target="_blank" rel="noopener noreferrer"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: "0.72rem", color: "var(--txt-3)", fontFamily: "monospace", textDecoration: "none", transition: "color .15s" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--accent)")}
+            onMouseLeave={e => (e.currentTarget.style.color = "var(--txt-3)")}
+          >
+            <Github size={13} /> github.com/asanchezx96 <ExternalLink size={11} />
+          </a>
+        </div>
+        <ProjectGrid />
+      </div>
+    </section>
+  );
+}
+
+
+/* ─────────────────────────────────────────────
+   CONTACT
+───────────────────────────────────────────── */
+function Contact() {
+  return (
+    <section id="contact">
+      <div
+        style={{ maxWidth: 1040, margin: "0 auto", padding: "72px 24px 96px" }}
+      >
+        <span className="label">05 · contacto</span>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto",
+            gap: 64,
+            alignItems: "start",
+          }}
+          className="about-grid"
+        >
+          <div>
+            <h2
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: "clamp(1.8rem, 4vw, 3rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.045em",
+                color: "var(--txt)",
+                lineHeight: 1.1,
+                marginBottom: 16,
+              }}
+            >
+              ¿Tienes un proyecto
+              <br />
+              en mente?
+            </h2>
+            <p
+              style={{
+                fontSize: "0.9rem",
+                color: "var(--txt-2)",
+                lineHeight: 1.75,
+                maxWidth: 440,
+                marginBottom: 36,
+              }}
+            >
+              Estoy disponible para nuevos proyectos y oportunidades. Escríbeme
+              y hablamos sobre cómo puedo ayudarte.
+            </p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <a
+                href="mailto:alex_180796@hotmail.com"
+                className="btn btn-solid"
+              >
+                <Mail size={13} /> alex_180796@hotmail.com
+              </a>
+              <a href="tel:+529616334735" className="btn btn-ghost">
+                <Phone size={13} /> 961 633 4735
+              </a>
+            </div>
+          </div>
+
+          {/* Social */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+              paddingTop: 8,
+            }}
+          >
+            {[
+              {
+                icon: <Github size={14} />,
+                label: "GitHub",
+                href: "https://github.com/asanchezx96",
+              },
+              {
+                icon: <Linkedin size={14} />,
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/in/asanchezx96/",
+              },
+            ].map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  fontSize: "0.8rem",
+                  color: "var(--txt-3)",
+                  textDecoration: "none",
+                  transition: "color .15s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "var(--accent)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "var(--txt-3)")
+                }
+              >
+                {s.icon} {s.label} <ExternalLink size={10} />
+              </a>
             ))}
           </div>
         </div>
       </div>
-    </section>
-  );
-}
 
-/* ═══════════════════════════════════════════════════════════
-   PROJECTS
-═══════════════════════════════════════════════════════════ */
-function Projects() {
-  return (
-    <section
-      id="projects"
-      className="py-24 border-t border-[var(--border)] bg-[var(--bg)]"
-    >
-      <div className="max-w-[1040px] mx-auto px-6">
-        <span className="text-[0.7rem] font-mono font-bold uppercase tracking-[0.2em] text-[var(--primary)] mb-4 block">
-          03. recent_works
-        </span>
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <h2 className="text-3xl font-bold text-[var(--txt)] tracking-tight">
-            Selected <span className="text-[var(--primary)]">Projects</span>.
-          </h2>
-          <a
-            href="https://github.com/asanchezx96"
-            target="_blank"
-            className="text-xs font-mono text-[var(--txt-3)] hover:text-[var(--primary)] flex items-center gap-2 transition-colors uppercase tracking-widest"
+      {/* Footer */}
+      <div
+        style={{ borderTop: "1px solid var(--border)", padding: "14px 24px" }}
+      >
+        <div
+          style={{
+            maxWidth: 1040,
+            margin: "0 auto",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span
+            style={{
+              fontSize: "0.68rem",
+              color: "var(--txt-3)",
+              fontFamily: "monospace",
+            }}
           >
-            git push origin main <ExternalLink size={14} />
-          </a>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.map((proj) => (
-            <div
-              key={proj.id}
-              className="code-card group hover:border-[var(--primary)]/50 transition-all duration-500"
-            >
-              <div className="code-dots">
-                <div className="code-dot dot-r" />
-                <div className="code-dot dot-y" />
-                <div className="code-dot dot-g" />
-              </div>
-              <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[var(--txt-3)] font-mono text-[9px] uppercase tracking-tighter">
-                {proj.name.toLowerCase().replace(" ", "_")}.app
-              </div>
-
-              <div className="mt-8 h-44 bg-[var(--bg)] flex items-center justify-center overflow-hidden relative border-b border-[var(--border)]">
-                <div className="absolute inset-0 bg-gradient-to-br from-[var(--primary)]/5 to-[var(--secondary)]/5" />
-                <div className="flex flex-col items-center gap-3 text-[var(--txt-3)] group-hover:scale-110 transition-transform duration-700">
-                  <div className="p-4 rounded-full bg-[var(--surface)] border border-[var(--border)] shadow-xl">
-                    <Laptop size={32} strokeWidth={1.5} className="text-[var(--primary)]" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-[var(--txt)] group-hover:text-[var(--primary)] transition-colors text-lg">
-                    {proj.name}
-                  </h3>
-                  <ArrowUpRight
-                    size={16}
-                    className="text-[var(--txt-3)] group-hover:text-[var(--primary)] transition-colors"
-                  />
-                </div>
-                <p className="text-[var(--txt-2)] text-sm mb-6 line-clamp-2 leading-relaxed font-medium">
-                  {proj.description}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {proj.tech.slice(0, 4).map((t) => (
-                    <span
-                      key={t}
-                      className="text-[9px] font-mono px-2 py-1 bg-[var(--subtle)] rounded border border-[var(--border)] text-[var(--txt-3)] uppercase tracking-tighter"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
+            © 2025 Alexis Rodrigo Sánchez Vázquez
+          </span>
+          <span
+            style={{
+              fontSize: "0.68rem",
+              color: "var(--txt-3)",
+              fontFamily: "monospace",
+            }}
+          >
+            Built with React & Vite
+          </span>
         </div>
       </div>
     </section>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CONTACT
-═══════════════════════════════════════════════════════════ */
-function Contact() {
-  return (
-    <section
-      id="contact"
-      className="py-24 border-t border-[var(--border)] bg-[var(--bg)] relative overflow-hidden"
-    >
-      <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[var(--primary)]/10 rounded-full blur-[100px] -z-10" />
-      
-      <div className="max-w-[800px] mx-auto px-6">
-        <div className="code-card animate-in fade-in slide-in-from-bottom-10 duration-1000">
-          <div className="code-dots">
-            <div className="code-dot dot-r" />
-            <div className="code-dot dot-y" />
-            <div className="code-dot dot-g" />
-          </div>
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 text-[var(--txt-3)] font-mono text-[10px]">
-            send_message.sh
-          </div>
-          
-          <div className="p-10 pt-16 text-center">
-            <span className="text-[0.7rem] font-mono font-bold uppercase tracking-[0.4em] text-[var(--primary)] mb-6 block">
-              -- EXECUTE CONTACT --
-            </span>
-            <h2 className="text-[clamp(2rem,5vw,3rem)] font-bold text-[var(--txt)] mb-8 leading-tight tracking-tight">
-              ¿Listo para el siguiente<br /><span className="text-[var(--primary)]">gran desafío</span>?
-            </h2>
-            <p className="text-[var(--txt-2)] text-lg mb-12 leading-relaxed max-w-[500px] mx-auto">
-              Si buscas a alguien que aporte valor real a tu equipo o proyecto, 
-              estoy a solo un commit de distancia.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <a
-                href="mailto:alex_180796@hotmail.com"
-                className="w-full sm:w-auto bg-[var(--primary)] text-[var(--bg)] px-10 py-5 rounded-xl font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl shadow-[var(--primary)]/20 flex items-center justify-center gap-3"
-              >
-                <Mail size={20} />
-                Enviame un email
-              </a>
-              <a
-                href="tel:+529543426612"
-                className="w-full sm:w-auto px-10 py-5 border-2 border-[var(--border)] rounded-xl font-bold text-lg hover:bg-[var(--surface)] hover:border-[var(--txt)] transition-all flex items-center justify-center gap-3"
-              >
-                <Phone size={20} />
-                Llamar ahora
-              </a>
-            </div>
-            
-            <div className="mt-12 pt-10 border-t border-[var(--border)] opacity-40 font-mono text-xs">
-              $ curl -X POST https://api.asanchez.dev/contact -d "message=hello"
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-20 flex flex-col md:flex-row items-center justify-between gap-6 opacity-60">
-          <p className="text-[var(--txt-3)] text-sm font-mono">
-            © 2024 Alexis Sánchez. Built with React & Vite.
-          </p>
-          <div className="flex gap-6">
-            <a
-              href="https://github.com/asanchezx96"
-              target="_blank"
-              className="text-[var(--txt-3)] hover:text-[var(--primary)] transition-colors"
-            >
-              <Github size={20} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/asanchezx96/"
-              target="_blank"
-              className="text-[var(--txt-3)] hover:text-[var(--primary)] transition-colors"
-            >
-              <Linkedin size={20} />
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════
-   MAIN PAGE
-═══════════════════════════════════════════════════════════ */
-const Home = () => {
-  const { dark } = useTheme();
-  const [showScroll, setShowScroll] = useState(false);
-
+/* ─────────────────────────────────────────────
+   BACK TO TOP
+───────────────────────────────────────────── */
+function BackToTop() {
+  const [show, setShow] = useState(false);
   useEffect(() => {
-    const handleScroll = () => {
-      setShowScroll(window.scrollY > 500);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const fn = () => setShow(window.scrollY > 600);
+    window.addEventListener("scroll", fn, { passive: true });
+    return () => window.removeEventListener("scroll", fn);
   }, []);
 
   return (
-    <div
-      className={`${dark ? "dark" : ""} bg-[var(--bg)] text-[var(--txt)] min-h-screen selection:bg-blue-500 selection:text-white relative`}
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Volver arriba"
+      style={{
+        position: "fixed",
+        bottom: 24,
+        right: 24,
+        zIndex: 50,
+        width: 36,
+        height: 36,
+        background: "var(--surface)",
+        border: "1px solid var(--border)",
+        color: "var(--txt-3)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: "pointer",
+        transition: "opacity .25s, color .15s, border-color .15s",
+        opacity: show ? 1 : 0,
+        pointerEvents: show ? "auto" : "none",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.color = "var(--accent)";
+        (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.color = "var(--txt-3)";
+        (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+      }}
     >
-      <div className="noise" />
+      <ArrowUp size={14} />
+    </button>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   PAGE
+───────────────────────────────────────────── */
+const Home = () => {
+  const { dark } = useTheme();
+
+  return (
+    <div
+      className={dark ? "dark" : ""}
+      style={{
+        background: "var(--bg)",
+        color: "var(--txt)",
+        minHeight: "100vh",
+      }}
+    >
       <Navbar />
       <main>
         <Hero />
@@ -734,16 +1147,7 @@ const Home = () => {
         <Projects />
         <Contact />
       </main>
-
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`fixed bottom-8 right-8 p-4 rounded-2xl glass border border-white/10 shadow-2xl text-[var(--txt)] z-50 transition-all duration-500 ${
-          showScroll ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"
-        } hover:scale-110 active:scale-90 group`}
-        aria-label="Scroll to top"
-      >
-        <ArrowUpRight className="-rotate-45 group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform" size={24} />
-      </button>
+      <BackToTop />
     </div>
   );
 };
