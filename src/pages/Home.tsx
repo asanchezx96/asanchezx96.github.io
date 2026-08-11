@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Mail, MapPin, Github, Linkedin, ExternalLink, GitBranch, Terminal, ChevronRight, ChevronLeft, Activity, Cpu, Code2, Briefcase, X } from "lucide-react";
+import { Mail, MapPin, Github, Linkedin, ExternalLink, GitBranch, ChevronRight, ChevronLeft, Cpu, Code2, Briefcase, X } from "lucide-react";
 import { SKILLS, EXPERIENCE, PROJECTS } from "@/data/portfolio";
 import img from "../assets/yo.png";
 
