@@ -212,7 +212,7 @@ export const PROJECTS: ProjectItem[] = [
     description:
       "MMORPG en desarrollo con mundo persistente, sistema de combate en tiempo real, economía de jugadores y narrativa expansiva. Arquitectura distribuida con servidor de juego dedicado y cliente web/desktop.",
     tech: ["TypeScript", "React", "C#", ".NET", "MySQL", "WebSockets"],
-    url: "https://github.com/asanchezx96/arcan-client",
+    url: "https://game.arcandevs.com",
     repos: [
       {
         label: "arcan-client",
@@ -236,7 +236,6 @@ export const PROJECTS: ProjectItem[] = [
     description:
       "Juego de estrategia espacial en tiempo real ambientado en el universo Arcan. Batallas entre flotas, conquista de sectores, diplomacia entre facciones y economía galáctica dinámica.",
     tech: ["TypeScript", "React", "C#", ".NET", "MySQL", "WebSockets"],
-    url: "https://github.com/asanchezx96/warspace-client",
     repos: [
       {
         label: "warspace-client",
@@ -260,7 +259,7 @@ export const PROJECTS: ProjectItem[] = [
     description:
       "Plataforma para guardar y restaurar workspaces de desarrollo completos. Cada workspace agrupa múltiples repositorios, archivos de configuración, documentación y tareas pendientes en un solo lugar. Si cambias de equipo, se te daña el equipo o simplemente necesitas retomar un proyecto desde cero, GuardSpace te permite restaurar todo tu entorno de trabajo exactamente como lo dejaste — sin perder ningún contexto.",
     tech: ["Vue.js", "TypeScript", "C#", ".NET", "SQL Server", "WebSockets"],
-    url: "https://github.com/asanchezx96/guardspace-web",
+    url: "https://guardspace.arcandevs.com",
     repos: [
       {
         label: "guardspace-web",
@@ -284,11 +283,11 @@ export const PROJECTS: ProjectItem[] = [
     description:
       "Herramienta de escritorio/web que centraliza la gestión de credenciales de Google Cloud Platform (GCP) sin necesidad de usar la terminal. Permite autenticarse con cuentas de GCP, seleccionar proyectos, gestionar service accounts, generar tokens y ejecutar operaciones directamente desde una interfaz gráfica intuitiva — eliminando la fricción del flujo de trabajo con gcloud CLI en el día a día.",
     tech: ["React", "TypeScript", "Python", "FastAPI", "GCP", "OAuth 2.0"],
-    url: "https://github.com/asanchezx96/ia-agent-console",
+    url: "https://github.com/asanchezx96/ia.agent.console",
     repos: [
       {
-        label: "ia-agent-console",
-        url: "https://github.com/asanchezx96/ia-agent-console",
+        label: "ia.agent.console",
+        url: "https://github.com/asanchezx96/ia.agent.console",
       },
       {
         label: "ia-agent-core",
@@ -304,7 +303,7 @@ export const PROJECTS: ProjectItem[] = [
     description:
       "Sistema integral de gestión de recursos humanos: nómina, control de asistencia, expedientes digitales, evaluaciones de desempeño y reportes gerenciales en tiempo real.",
     tech: ["React", "C#", ".NET", "SQL Server", "TypeScript"],
-    url: "https://github.com/asanchezx96/intpro-rh-web",
+    url: "https://test-intpro.arcandevs.com",
     repos: [
       {
         label: "intpro-rh-web",
@@ -335,7 +334,7 @@ export const PROJECTS: ProjectItem[] = [
       "PostgreSQL",
       "AES-256",
     ],
-    url: "https://github.com/asanchezx96/savenv-web",
+    url: "https://savenv.arcandevs.com",
     repos: [
       { label: "savenv-web", url: "https://github.com/asanchezx96/savenv-web" },
       { label: "savenv-api", url: "https://github.com/asanchezx96/savenv-api" },
@@ -353,7 +352,7 @@ export const PROJECTS: ProjectItem[] = [
     description:
       "Dashboard empresarial para HCO Consultoría y Servicios: visualización de KPIs en tiempo real, gestión de reportes, análisis de datos operativos y panel administrativo centralizado.",
     tech: ["React", "JavaScript", "C#", "MySQL"],
-    url: "https://github.com/asanchezx96/hco-databoard",
+    url: "https://hco-databoard.com/",
     repos: [
       {
         label: "hco-databoard",
@@ -363,6 +362,22 @@ export const PROJECTS: ProjectItem[] = [
         label: "hco-databoard-api",
         url: "https://github.com/asanchezx96/hco-databoard-api",
       },
+    ],
+  },
+  {
+    id: 8,
+    name: "Taskflow",
+    folder: "taskflow",
+    type: "Productivity / SaaS",
+    description:
+      "Plataforma de gestión de tareas y flujos de trabajo orientada a equipos de desarrollo y negocios.",
+    tech: ["React", "TypeScript", "Node.js", "MySQL"],
+    url: "https://taskflow.arcandevs.com",
+    repos: [
+      {
+        label: "taskflow-web",
+        url: "https://github.com/asanchezx96/taskflow-web",
+      }
     ],
   },
 ];

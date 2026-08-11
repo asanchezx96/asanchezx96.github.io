@@ -1369,32 +1369,61 @@ function ProjectGrid() {
                 )}
               </div>
               {/* Info */}
-              <div style={{ padding: "12px 14px" }}>
-                <div
-                  style={{
-                    fontWeight: 600,
-                    fontSize: "0.84rem",
-                    color: "var(--txt)",
-                    marginBottom: 3,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {p.name}
+              <div
+                style={{
+                  padding: "12px 14px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div style={{ overflow: "hidden", paddingRight: 8 }}>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      fontSize: "0.84rem",
+                      color: "var(--txt)",
+                      marginBottom: 3,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {p.name}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.62rem",
+                      color: "var(--txt-3)",
+                      fontFamily: "monospace",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {p.type}
+                  </div>
                 </div>
-                <div
-                  style={{
-                    fontSize: "0.62rem",
-                    color: "var(--txt-3)",
-                    fontFamily: "monospace",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {p.type}
-                </div>
+                {p.url && (
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                      color: "var(--txt-3)",
+                      padding: 4,
+                      display: "flex",
+                      transition: "color .15s",
+                      flexShrink: 0,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--txt-3)")}
+                    title="Visitar proyecto"
+                  >
+                    <ExternalLink size={14} />
+                  </a>
+                )}
               </div>
             </div>
           );
