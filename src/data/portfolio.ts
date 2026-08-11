@@ -380,4 +380,36 @@ export const PROJECTS: ProjectItem[] = [
       }
     ],
   },
+  {
+    id: 9,
+    name: "Schema Migrates",
+    folder: "schema-migrates",
+    type: "Dev Tool / NPM Package",
+    description:
+      "Paquete de NPM para gestionar migraciones de bases de datos de forma sencilla y programática.",
+    tech: ["Node.js", "TypeScript", "NPM"],
+    url: "https://www.npmjs.com/package/schema-migrates",
+    repos: [
+      {
+        label: "schema-migrates",
+        url: "https://www.npmjs.com/package/schema-migrates",
+      }
+    ],
+  },
+  {
+    id: 10,
+    name: "Desktop App Template",
+    folder: "desktop-app-template",
+    type: "Template / Desktop",
+    description:
+      "Plantilla base para el desarrollo de aplicaciones de escritorio modernas y escalables.",
+    tech: ["TypeScript", "React", "Electron"],
+    url: "https://github.com/asanchezx96/desktop-app-template",
+    repos: [
+      {
+        label: "desktop-app-template",
+        url: "https://github.com/asanchezx96/desktop-app-template",
+      }
+    ],
+  },
 ];
